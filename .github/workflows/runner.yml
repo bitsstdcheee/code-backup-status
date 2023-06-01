@@ -1,10 +1,15 @@
 name: Runner
 on:
-    push:
-    workflow_dispatch:
+  push:
+  workflow_dispatch:
 jobs:
-    update_status:
-        name: 更新代码状态
+  update_status:
+    name: 更新代码状态
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 仓库
+        uses: actions/checkout@v2
+      - name: 更新统计信息
         uses: ./.github/workflows/update_status.yml
-        secrets:
-            TOKEN: ${{ secrets.TOKEN }}
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
