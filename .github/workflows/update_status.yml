@@ -1,4 +1,6 @@
 name: 更新统计信息
+env:
+    TOKEN: ${{ secrets.TOKEN }}
 on:
     workflow_dispatch:
     workflow_call:
@@ -13,7 +15,7 @@ jobs:
               repository: bitsstdcheee/code-backup
               ref: main
               path: code-backup
-              token: ${{ secrets.TOKEN }}
+              token: ${{ env.TOKEN }}
               fetch-depth: 1
           - name: 克隆仓库 (本仓库)
             uses: actions/checkout@v2
