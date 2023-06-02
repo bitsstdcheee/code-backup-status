@@ -188,7 +188,7 @@ int main() {
 #ifndef CI
     processDirectory("D:\\code-backup\\");
 #else
-    processDirectory("code-backup\\");
+    processDirectory("code-backup");
 #endif
     return 0;
 }
