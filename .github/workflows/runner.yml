@@ -23,14 +23,29 @@ jobs:
         with:
           fetch-depth: 1
           path: status
-      - name: 编译
+      - name: 编译 (Markdown)
+        id: compile-markdown
         run: |
-          g++ status/main.cpp -o status/main -DCI
-      - name: 运行
-        id: run
+          g++ status/main.cpp -o status/main_markdown -DCI -DOUT_Markdown
+      - name: 编译 (Out)
+        id: compile-out
         run: |
-          ./status/main > output.txt
-      - name: 输出结果
+          g++ status/main.cpp -o status/main_out -DCI
+      - name: 运行 (Markdown)
+        id: run-markdown
+        if: always() && steps.compile-markdown.conclusion == 'success'
+        run: |
+          ./status/main_markdown > output.md
+      - name: 运行 (Out)
+        if: always() && steps.compile-out.conclusion == 'success'
+        id: run-out
+        run: |
+          ./status/main_out > output.txt
+      - name: 输出结果 (Markdown)
+        if: always()
+        run: |
+          cat output.md
+      - name: 输出结果 (Out)
         if: always()
         run: |
           cat output.txt
@@ -50,9 +65,11 @@ jobs:
           path: |
             status
             !status/.git
-      - name: 上传构建 (output.txt)
-        if: always() && steps.run.conclusion == 'success'
+      - name: 上传构建 (output)
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: output
-          path: output.txt
+          path: |
+            output.md
+            output.txt

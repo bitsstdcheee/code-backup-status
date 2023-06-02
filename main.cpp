@@ -193,34 +193,84 @@ void processDirectory(const string& path) {
                 }
             }
             // cout << "status: " << status << "|" << status.length() << endl;
+            #ifdef OUT_Markdown
+            cout << oj.first << " | " << id << " | " << count << " | ";
+            #else
             cout << "#" << oj.first << "," << id << "," << count << ",";
+            #endif
             if (status.empty()) {
+                #ifdef OUT_Markdown
+                cout << "N/A | ";
+                #else
                 cout << "N/A,";
+                #endif
             }
             else {
                 // FileName fn = parseFileName(status); // ??? what are you doing?
                 if (status == "AC") {
+                    #ifdef OUT_Markdown
+                    cout << "AC | ";
+                    #else
                     cout << "AC,";
+                    #endif
                 }
                 else {
+                    #ifdef OUT_Markdown
+                    cout << status << " | ";
+                    #else
                     cout << status << ",";
+                    #endif
                 }
             }
             if (max_pt == 0) {
+                #ifdef OUT_Markdown
+                cout << "N/A | ";
+                #else
                 cout << "N/A,";
+                #endif
             }
             else {
+                #ifdef OUT_Markdown
+                cout << max_pt << " | ";
+                #else
                 cout << max_pt << ",";
+                #endif
             }
+            #ifdef OUT_Markdown
+            cout << data_points.size() << " | ";
+            #else
             cout << data_points.size() << endl;
             cout << "  cpp files: ";
+            #endif
+            #ifdef OUT_Markdown
+            bool first_out = true; // 保证最后没有多余的逗号
+            #endif
             for (const auto& cpp_file : cpp_files) {
+                #ifdef OUT_Markdown
+                if (first_out) cout << cpp_file;
+                else cout << ", " << cpp_file;
+                first_out = false;
+                #else
                 cout << cpp_file << " ";
+                #endif
             }
+            #ifdef OUT_Markdown
+            cout << " | ";
+            #else
             cout << endl;
             cout << "  data points: ";
+            #endif
+            #ifdef OUT_Markdown
+            first_out = true;
+            #endif
             for (const auto& data_point : data_points) {
+                #ifdef OUT_Markdown
+                if (first_out) cout << data_point;
+                else cout << ", " << data_point;
+                first_out = false;
+                #else
                 cout << data_point << " ";
+                #endif
             }
             cout << endl;
         }
@@ -228,6 +278,11 @@ void processDirectory(const string& path) {
 }
 
 int main() {
+#ifdef OUT_Markdown
+// 输出表头
+cout << "OJ | ID | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量" << endl;
+cout << "-- | -- | ------- | ------------ | ------ | ---------" << endl;
+#endif
 #ifndef CI
     processDirectory("D:\\code-backup\\");
 #else
