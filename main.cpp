@@ -185,6 +185,10 @@ void processDirectory(const string& path) {
 }
 
 int main() {
+#ifndef CI
     processDirectory("D:\\code-backup\\");
+#else
+    processDirectory("code-backup\\");
+#endif
     return 0;
 }
