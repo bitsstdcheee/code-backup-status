@@ -5,6 +5,37 @@ on:
 jobs:
   update_status:
     name: 更新代码状态
-    uses: ./.github/workflows/update_status.yml
-    secrets:
-        status-token: "${{ github.secrets.repo_key }}"
+      # secrets:
+      # status-token: ${{ github.REPO_KEY }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 克隆仓库 (bitsstdcheee/code-backup)
+        uses: actions/checkout@v2
+        with:
+          repository: bitsstdcheee/code-backup
+          ref: development
+          path: code-backup
+            # token: ${{ secrets.status-token }}
+          token: ${{ secrets.REPO_KEY }}
+          fetch-depth: 1
+      - name: 克隆仓库 (本仓库)
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+          path: status
+      - name: 编译
+        run: |
+          g++ status/main.cpp -o status/main -DCI
+      - name: 运行
+        run: |
+          ./status/main > output.txt
+      - name: 输出结果
+        if: always()
+        run: |
+          cat output.txt
+      - name: 上传构件
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: code
+          path: .

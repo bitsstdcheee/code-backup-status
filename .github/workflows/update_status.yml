@@ -4,7 +4,7 @@ on:
   workflow_call:
     secrets:
       status-token:
-        description: '访问令牌'
+        description: "status-token"
         required: true
 jobs:
   update_status_information:

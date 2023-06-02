@@ -9,6 +9,20 @@
 using namespace std;
 namespace fs = std::filesystem;
 
+const int oj_exclude_num = 10;
+string oj_exclude[oj_exclude_num] = {
+    "Draft Code",
+    "Atcoder",
+    ".git",
+    ".github",
+    "Lesson",
+    "hfoj.net",
+    "Others",
+    "Owning",
+    "vim",
+    "work"
+};
+
 // 定义文件名中的关键词
 struct FileName {
     string id;
@@ -32,6 +46,7 @@ FileName parseFileName(const string& filename) {
     FileName fn;
     size_t pos = filename.find("_ver.");
     if (pos == string::npos) {
+        // cout << "parse: " << filename << " exit before #1" << endl;
         return fn;
     }
     fn.id = filename.substr(0, pos);
@@ -40,6 +55,7 @@ FileName parseFileName(const string& filename) {
         pos2 = filename.find('.', pos + 5);
     }
     if (pos2 == string::npos) {
+        // cout << "parse: " << filename << " exit before #2" << endl;
         return fn;
     }
     fn.date = filename.substr(pos + 4, pos2 - pos - 4);
@@ -48,11 +64,13 @@ FileName parseFileName(const string& filename) {
         pos = filename.find('.', pos2 + 1);
     }
     if (pos == string::npos) {
+        // cout << "parse: " << filename << " exit before #3" << endl;
         return fn;
     }
     fn.status = filename.substr(pos2 + 1, pos - pos2 - 1);
     pos2 = filename.find("pt", pos + 1);
     if (pos2 == string::npos) {
+        // cout << "parse: " << filename << " exit before #4 (status=" << fn.status << ")" << endl;
         return fn;
     }
     fn.pt = filename.substr(pos + 1, pos2 - pos - 1);
@@ -70,6 +88,7 @@ FileName parseFileName(const string& filename) {
             fn.data_point = filename.substr(pos + 1, pos2 - pos - 1);
         }
     }
+    // cout << "parse: " << filename << " fn.status: " << fn.status << endl;
     return fn;
 }
 
@@ -103,13 +122,29 @@ void processDirectory(const string& path) {
                 size_t pos = filename.find_last_of('_');
                 if (pos != string::npos) {
                     string id = filename.substr(0, pos);
-                    oj_map[getOJName(entry.path().parent_path().string())][id].push_back(filename);
+                    string ojName = getOJName(entry.path().parent_path().string());
+                    bool flag = false;
+                    for (int i = 0; i < oj_exclude_num; i++) {
+                        if (ojName == oj_exclude[i]) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (!flag) oj_map[ojName][id].push_back(filename);
                 }
             }
             else if (isCppFile(filename)) {
                 FileName fn = parseFileName(filename);
                 if (!fn.id.empty()) {
-                    oj_map[getOJName(entry.path().parent_path().string())][fn.id].push_back(filename);
+                    string ojName = getOJName(entry.path().parent_path().string());
+                    bool flag = false;
+                    for (int i = 0; i < oj_exclude_num; i++) {
+                        if (ojName == oj_exclude[i]) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (!flag) oj_map[ojName][fn.id].push_back(filename);
                 }
             }
         }
@@ -131,16 +166,23 @@ void processDirectory(const string& path) {
                 }
                 else if (isCppFile(filename)) {
                     FileName fn = parseFileName(filename);
+                    // cout << "filename: " << filename << " " << fn.status << endl;
                     if (fn.id == id) {
-                        cpp_files.push_back(fs::absolute(filename).string());
+                        // cpp_files.push_back(oj.first + "/" + fs::absolute(filename).string());
+                        cpp_files.push_back(oj.first + "/" + filename);
+                        if (fn.status.empty()) {
+                            // cout << "Warning: " << filename << " status empty()" << endl;
+                        }
                         if (fn.status == "AC") {
+                            // cout << "!En1" << endl;
                             status = "AC";
                         }
                         else if (status.empty() || fn.date > parseFileName(status).date ||
                             (fn.date == parseFileName(status).date && (fn.count.empty() || safe_stoi(fn.count) > safe_stoi(parseFileName(status).count)))) {
                             status = filename;
                         }
-                        if (fn.pt == "AC") {
+                        // if (fn.pt == "AC") { // ??? 
+                        if (fn.status == "AC") {
                             max_pt = 100;
                         }
                         else {
@@ -150,17 +192,18 @@ void processDirectory(const string& path) {
                     }
                 }
             }
-            cout << oj.first << "," << id << "," << count << ",";
+            // cout << "status: " << status << "|" << status.length() << endl;
+            cout << "#" << oj.first << "," << id << "," << count << ",";
             if (status.empty()) {
                 cout << "N/A,";
             }
             else {
-                FileName fn = parseFileName(status);
-                if (fn.status == "AC") {
+                // FileName fn = parseFileName(status); // ??? what are you doing?
+                if (status == "AC") {
                     cout << "AC,";
                 }
                 else {
-                    cout << fn.status << ",";
+                    cout << status << ",";
                 }
             }
             if (max_pt == 0) {
@@ -185,6 +228,10 @@ void processDirectory(const string& path) {
 }
 
 int main() {
+#ifndef CI
     processDirectory("D:\\code-backup\\");
+#else
+    processDirectory("code-backup");
+#endif
     return 0;
 }
