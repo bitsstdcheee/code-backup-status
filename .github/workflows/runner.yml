@@ -7,4 +7,4 @@ jobs:
     name: 更新代码状态
     uses: ./.github/workflows/update_status.yml
     with:
-        TOKEN: ${{ secrets.repo_key }}
+        TOKEN: ${{ github.secrets.repo_key }}
