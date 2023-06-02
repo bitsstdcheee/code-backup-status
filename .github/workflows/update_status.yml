@@ -2,6 +2,10 @@ name: 更新统计信息
 on:
   workflow_dispatch:
   workflow_call:
+    secrets:
+      status-token:
+        description: "status-token"
+        required: true
 jobs:
   update_status_information:
     name: 更新统计信息
