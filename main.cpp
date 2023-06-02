@@ -280,7 +280,7 @@ void processDirectory(const string& path) {
 int main() {
 #ifdef OUT_Markdown
 // 输出表头
-cout << "OJ | ID | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量" << endl;
+cout << "OJ | ID | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量 | 代码提交文件 | 数据点文件" << endl;
 cout << "-- | -- | ------- | ------------ | ------ | ---------" << endl;
 #endif
 #ifndef CI
