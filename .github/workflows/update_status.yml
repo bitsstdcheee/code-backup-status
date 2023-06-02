@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   workflow_call:
     secrets:
-      TOKEN:
+      status-token:
         description: '访问令牌'
         required: true
 jobs:
@@ -17,7 +17,7 @@ jobs:
           repository: bitsstdcheee/code-backup
           ref: main
           path: code-backup
-          token: ${{ env.TOKEN }}
+          token: ${{ env.status-token }}
           fetch-depth: 1
       - name: 克隆仓库 (本仓库)
         uses: actions/checkout@v2
