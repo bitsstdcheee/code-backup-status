@@ -168,7 +168,8 @@ void processDirectory(const string& path) {
                     FileName fn = parseFileName(filename);
                     // cout << "filename: " << filename << " " << fn.status << endl;
                     if (fn.id == id) {
-                        cpp_files.push_back(fs::absolute(filename).string());
+                        // cpp_files.push_back(oj.first + "/" + fs::absolute(filename).string());
+                        cpp_files.push_back(oj.first + "/" + filename);
                         if (fn.status.empty()) {
                             // cout << "Warning: " << filename << " status empty()" << endl;
                         }
