@@ -2,11 +2,10 @@ name: 更新统计信息
 on:
   workflow_dispatch:
   workflow_call:
-    inputs:
+    secrets:
       TOKEN:
         description: '访问令牌'
         required: true
-        type: string
 jobs:
   update_status_information:
     name: 更新统计信息
