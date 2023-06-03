@@ -1,6 +1,6 @@
 OJ | ID | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量 | 代码提交文件 | 数据点文件 | 完成
 -- | -- | ------- | ------------ | ------ | --------- | ------------ | --------- | ---
-BZOJ | P1833 | 3 | AC | 100 | 4 | BZOJ/P1833_ver.20221121_AC.cpp, BZOJ/P1833_ver.20221121_WA_90pt.cpp, BZOJ/P1833_ver.20221121_TLE_WA_30pt.cpp | 1.out, 10.in, 1.in, 10.out | [x]
+BZOJ | P1833 | 3 | AC | 100 | 4 | BZOJ/P1833_ver.20221121_AC.cpp, BZOJ/P1833_ver.20221121_WA_90pt.cpp, BZOJ/P1833_ver.20221121_TLE_WA_30pt.cpp | 1.out, 10.in, 1.in, 10.out | - [x]
 HDU | P1054 | 4 | AC | 100 | 0 | HDU/P1054_ver.20230520_WA_1.cpp, HDU/P1054_ver.20230520_WA.cpp, HDU/P1054_ver.20230520_CE.cpp, HDU/P1054_ver.20230520_AC.cpp |  | [x]
 HDU | P1251 | 3 | AC | 100 | 0 | HDU/P1251_ver.20230203_RE_1.cpp, HDU/P1251_ver.20230203_RE.cpp, HDU/P1251_ver.20230203_AC.cpp |  | [x]
 HDU | P1542 | 2 | AC | 100 | 0 | HDU/P1542_ver.20230329_PE.cpp, HDU/P1542_ver.20230329_AC.cpp |  | [x]
