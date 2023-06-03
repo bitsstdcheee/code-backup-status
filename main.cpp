@@ -5,6 +5,7 @@
 #include <map>
 #include <algorithm>
 #include <filesystem>
+#include <regex>
 
 using namespace std;
 namespace fs = std::filesystem;
@@ -42,6 +43,31 @@ int safe_stoi(const string& str) {
     }
 }
 // 解析文件名，提取关键词
+FileName parseFileName(const string& filename) {
+    FileName fn;
+    std::string pattern = R"(^(.*?)_ver\.(.*?)_(.*?)(?:_((?:[^\d_]+(?:_[^\d_]+)*)))?_?((\d+)pt)?((?:_(\d+))*)?(\.cpp|\.in|\.out|\.ans)$)";
+    std::regex regex(pattern);
+    std::smatch match;
+    if (std::regex_match(filename, match, regex)) {
+        fn.id = match.str(1);
+        fn.date = match.str(2);
+        fn.status = match.str(3);
+        if (!match.str(4).empty()) {
+            fn.status = fn.status + "_" + match.str(4);
+        }
+        fn.pt = match.str(6); // $5 是带有后缀pt的分数, $6 是没有后缀的 
+        fn.count = match.str(8);
+        
+    } else {
+        // 没有找到
+        #ifndef OUT_Markdown
+        cout << "Warning: " << filename << " misses the pattern" << endl;
+        #endif
+    }
+    return fn;
+
+}
+/*
 FileName parseFileName(const string& filename) {
     FileName fn;
     size_t pos = filename.find("_ver.");
@@ -91,6 +117,7 @@ FileName parseFileName(const string& filename) {
     // cout << "parse: " << filename << " fn.status: " << fn.status << endl;
     return fn;
 }
+*/
 
 // 判断文件是否是数据文件
 bool isDataFile(const string& filename) {
@@ -154,7 +181,7 @@ void processDirectory(const string& path) {
             string id = problem.first;
             vector<string> cpp_files;
             string status = "";
-            int max_pt = 0;
+            int max_pt = -1;
             int count = 0;
             vector<string> data_points;
             for (const auto& filename : problem.second) {
@@ -177,10 +204,15 @@ void processDirectory(const string& path) {
                             // cout << "!En1" << endl;
                             status = "AC";
                         }
+                        else if (status != "AC" && !fn.status.empty()) {
+                            status = fn.status;
+                        }
+                        /*
                         else if (status.empty() || fn.date > parseFileName(status).date ||
                             (fn.date == parseFileName(status).date && (fn.count.empty() || safe_stoi(fn.count) > safe_stoi(parseFileName(status).count)))) {
                             status = filename;
                         }
+                        */
                         // if (fn.pt == "AC") { // ??? 
                         if (fn.status == "AC") {
                             max_pt = 100;
@@ -222,7 +254,10 @@ void processDirectory(const string& path) {
                     #endif
                 }
             }
-            if (max_pt == 0) {
+            // ??? 你要不要看一下你在干什么
+            // if (max_pt == 0) {
+            if (max_pt < 0) {
+                // max_pt 默认值为 -1
                 #ifdef OUT_Markdown
                 cout << "N/A | ";
                 #else
