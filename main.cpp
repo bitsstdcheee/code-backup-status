@@ -302,7 +302,7 @@ void processDirectory(const string& path) {
                 else cout << ", [" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
                 first_out = false;
                 #else
-                cout << cpp_file << " ";
+                cout << cpp_file.second << " ";
                 #endif
             }
             #ifdef OUT_Markdown
