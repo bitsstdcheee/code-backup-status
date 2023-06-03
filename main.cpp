@@ -83,57 +83,6 @@ FileName parseFileName(const string& filename) {
     return fn;
 
 }
-/*
-FileName parseFileName(const string& filename) {
-    FileName fn;
-    size_t pos = filename.find("_ver.");
-    if (pos == string::npos) {
-        // cout << "parse: " << filename << " exit before #1" << endl;
-        return fn;
-    }
-    fn.id = filename.substr(0, pos);
-    size_t pos2 = filename.find('_', pos + 5);
-    if (pos2 == string::npos) {
-        pos2 = filename.find('.', pos + 5);
-    }
-    if (pos2 == string::npos) {
-        // cout << "parse: " << filename << " exit before #2" << endl;
-        return fn;
-    }
-    fn.date = filename.substr(pos + 4, pos2 - pos - 4);
-    pos = filename.find('_', pos2 + 1);
-    if (pos == string::npos) {
-        pos = filename.find('.', pos2 + 1);
-    }
-    if (pos == string::npos) {
-        // cout << "parse: " << filename << " exit before #3" << endl;
-        return fn;
-    }
-    fn.status = filename.substr(pos2 + 1, pos - pos2 - 1);
-    pos2 = filename.find("pt", pos + 1);
-    if (pos2 == string::npos) {
-        // cout << "parse: " << filename << " exit before #4 (status=" << fn.status << ")" << endl;
-        return fn;
-    }
-    fn.pt = filename.substr(pos + 1, pos2 - pos - 1);
-    pos = filename.find('_', pos2 + 2);
-    if (pos != string::npos) {
-        pos2 = filename.find('.', pos + 1);
-        if (pos2 != string::npos) {
-            fn.count = filename.substr(pos + 1, pos2 - pos - 1);
-        }
-    }
-    pos = filename.find('_', pos2 + 1);
-    if (pos != string::npos) {
-        pos2 = filename.find('.', pos + 1);
-        if (pos2 != string::npos) {
-            fn.data_point = filename.substr(pos + 1, pos2 - pos - 1);
-        }
-    }
-    // cout << "parse: " << filename << " fn.status: " << fn.status << endl;
-    return fn;
-}
-*/
 
 // 判断文件是否是数据文件
 bool isDataFile(const string& filename) {
@@ -209,27 +158,17 @@ void processDirectory(const string& path) {
                 }
                 else if (isCppFile(filename)) {
                     FileName fn = parseFileName(filename);
-                    // cout << "filename: " << filename << " " << fn.status << endl;
                     if (fn.id == id) {
-                        // cpp_files.push_back(oj.first + "/" + fs::absolute(filename).string());
                         cpp_files.push_back(make_pair(fn, oj.first + "/" + filename));
                         if (fn.status.empty()) {
-                            // cout << "Warning: " << filename << " status empty()" << endl;
+
                         }
                         if (fn.status == "AC") {
-                            // cout << "!En1" << endl;
                             status = "AC";
                         }
                         else if (status != "AC" && !fn.status.empty()) {
                             status = fn.status;
                         }
-                        /*
-                        else if (status.empty() || fn.date > parseFileName(status).date ||
-                            (fn.date == parseFileName(status).date && (fn.count.empty() || safe_stoi(fn.count) > safe_stoi(parseFileName(status).count)))) {
-                            status = filename;
-                        }
-                        */
-                        // if (fn.pt == "AC") { // ??? 
                         if (fn.status == "AC") {
                             max_pt = 100;
                         }
@@ -240,7 +179,6 @@ void processDirectory(const string& path) {
                     }
                 }
             }
-            // cout << "status: " << status << "|" << status.length() << endl;
             #ifdef OUT_Markdown
             cout << oj.first << " | " << id << " | " << count << " | ";
             #else
@@ -254,7 +192,6 @@ void processDirectory(const string& path) {
                 #endif
             }
             else {
-                // FileName fn = parseFileName(status); // ??? what are you doing?
                 if (status == "AC") {
                     #ifdef OUT_Markdown
                     cout << "AC | ";
@@ -270,8 +207,6 @@ void processDirectory(const string& path) {
                     #endif
                 }
             }
-            // ??? 你要不要看一下你在干什么
-            // if (max_pt == 0) {
             if (max_pt < 0) {
                 // max_pt 默认值为 -1
                 #ifdef OUT_Markdown
