@@ -1,6 +1,7 @@
 name: Runner
 on:
   push:
+  pull_request:
   workflow_dispatch:
 jobs:
   update_status:
@@ -8,9 +9,11 @@ jobs:
       # secrets:
       # status-token: ${{ github.REPO_KEY }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: 克隆仓库 (bitsstdcheee/code-backup)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: bitsstdcheee/code-backup
           ref: development
@@ -19,23 +22,83 @@ jobs:
           token: ${{ secrets.REPO_KEY }}
           fetch-depth: 1
       - name: 克隆仓库 (本仓库)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          fetch-depth: 1
           path: status
-      - name: 编译
+      - name: 获取当前分支
+        id: extract-branch
         run: |
-          g++ status/main.cpp -o status/main -DCI
-      - name: 运行
+            cd status
+            echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
+      - name: 编译 (Markdown)
+        id: compile-markdown
         run: |
-          ./status/main > output.txt
-      - name: 输出结果
+          g++ status/main.cpp -o status/main_markdown -DCI -DOUT_Markdown -DOUT_Checkbox
+      - name: 编译 (Out)
+        id: compile-out
+        run: |
+          g++ status/main.cpp -o status/main_out -DCI
+      - name: 运行 (Markdown)
+        id: run-markdown
+        if: always() && steps.compile-markdown.conclusion == 'success'
+        run: |
+          ./status/main_markdown > output.md
+      - name: 运行 (Out)
+        if: always() && steps.compile-out.conclusion == 'success'
+        id: run-out
+        run: |
+          ./status/main_out > output.txt
+      - name: 输出结果 (Markdown)
+        if: always()
+        run: |
+          cat output.md
+      - name: 输出结果 (Out)
         if: always()
         run: |
           cat output.txt
-      - name: 上传构件
-        if: always()
-        uses: actions/upload-artifact@v2
+      - name: 更新 README.md
+        if: always() || steps.compile-markdown.conclusion == 'success'
+        run: |
+          cd status
+          cp -f ../output.md README.md
+      - name: 输出更改
+        run: |
+          cd status
+          git status
+          git diff --color
+      - name: 提交更改
+        id: commit-change
+        run: |
+          cd status
+          git add README.md
+          if [ -n "$(git status -s)" ]; then
+            echo "当前有更改"
+            echo "need_commit=1" >> $GITHUB_OUTPUT
+          else
+            echo "当前无需更改"
+            echo "need_commit=0" >> $GITHUB_OUTPUT
+          fi
+      - name: 提交更改并推送
+        uses: bitsstdcheee/action-push@v1.4.1
+        if: always() && steps.commit-change.outputs.need_commit == 1
         with:
-          name: code
-          path: .
+          directory: status
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: "[skip cl] 更新 README.md"
+          branch: ${{ steps.extract-branch.outputs.branch }}
+      - name: 上传构件 (code-backup-status)
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: code-backup-status-repo
+          path: |
+            status
+            !status/.git
+      - name: 上传构建 (output)
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: output
+          path: |
+            output.md
+            output.txt

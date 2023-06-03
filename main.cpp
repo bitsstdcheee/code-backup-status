@@ -5,11 +5,15 @@
 #include <map>
 #include <algorithm>
 #include <filesystem>
+#include <regex>
 
 using namespace std;
 namespace fs = std::filesystem;
 
 const int oj_exclude_num = 10;
+const string repo_url = "https://github.com/bitsstdcheee/code-backup";
+const string repo_branch = "development";
+const string repo_prefix = repo_url + "/blob/" + repo_branch + "/";
 string oj_exclude[oj_exclude_num] = {
     "Draft Code",
     "Atcoder",
@@ -41,55 +45,43 @@ int safe_stoi(const string& str) {
         return 0;
     }
 }
+// 输出时输出关键内容
+string getFileDescription(const FileName& fn, bool enable_AC = false) {
+    string res = fn.date + " " + fn.status;
+    if (!fn.pt.empty()) {
+        res = res + "/" + fn.pt;
+    }
+    if (enable_AC) {
+        if (fn.status == "AC") {
+            res = res + " :white_check_mark:";
+        }
+    }
+    return res;
+}
 // 解析文件名，提取关键词
 FileName parseFileName(const string& filename) {
     FileName fn;
-    size_t pos = filename.find("_ver.");
-    if (pos == string::npos) {
-        // cout << "parse: " << filename << " exit before #1" << endl;
-        return fn;
-    }
-    fn.id = filename.substr(0, pos);
-    size_t pos2 = filename.find('_', pos + 5);
-    if (pos2 == string::npos) {
-        pos2 = filename.find('.', pos + 5);
-    }
-    if (pos2 == string::npos) {
-        // cout << "parse: " << filename << " exit before #2" << endl;
-        return fn;
-    }
-    fn.date = filename.substr(pos + 4, pos2 - pos - 4);
-    pos = filename.find('_', pos2 + 1);
-    if (pos == string::npos) {
-        pos = filename.find('.', pos2 + 1);
-    }
-    if (pos == string::npos) {
-        // cout << "parse: " << filename << " exit before #3" << endl;
-        return fn;
-    }
-    fn.status = filename.substr(pos2 + 1, pos - pos2 - 1);
-    pos2 = filename.find("pt", pos + 1);
-    if (pos2 == string::npos) {
-        // cout << "parse: " << filename << " exit before #4 (status=" << fn.status << ")" << endl;
-        return fn;
-    }
-    fn.pt = filename.substr(pos + 1, pos2 - pos - 1);
-    pos = filename.find('_', pos2 + 2);
-    if (pos != string::npos) {
-        pos2 = filename.find('.', pos + 1);
-        if (pos2 != string::npos) {
-            fn.count = filename.substr(pos + 1, pos2 - pos - 1);
+    std::string pattern = R"(^(.*?)_ver\.(.*?)_(.*?)(?:_((?:[^\d_]+(?:_[^\d_]+)*)))?_?((\d+)pt)?((?:_(\d+))*)?(\.cpp|\.in|\.out|\.ans)$)";
+    std::regex regex(pattern);
+    std::smatch match;
+    if (std::regex_match(filename, match, regex)) {
+        fn.id = match.str(1);
+        fn.date = match.str(2);
+        fn.status = match.str(3);
+        if (!match.str(4).empty()) {
+            fn.status = fn.status + "_" + match.str(4);
         }
+        fn.pt = match.str(6); // $5 是带有后缀pt的分数, $6 是没有后缀的 
+        fn.count = match.str(8);
+        
+    } else {
+        // 没有找到
+        #ifndef OUT_Markdown
+        cout << "Warning: " << filename << " misses the pattern" << endl;
+        #endif
     }
-    pos = filename.find('_', pos2 + 1);
-    if (pos != string::npos) {
-        pos2 = filename.find('.', pos + 1);
-        if (pos2 != string::npos) {
-            fn.data_point = filename.substr(pos + 1, pos2 - pos - 1);
-        }
-    }
-    // cout << "parse: " << filename << " fn.status: " << fn.status << endl;
     return fn;
+
 }
 
 // 判断文件是否是数据文件
@@ -152,9 +144,9 @@ void processDirectory(const string& path) {
     for (const auto& oj : oj_map) {
         for (const auto& problem : oj.second) {
             string id = problem.first;
-            vector<string> cpp_files;
+            vector<pair<FileName, string>> cpp_files;
             string status = "";
-            int max_pt = 0;
+            int max_pt = -1;
             int count = 0;
             vector<string> data_points;
             for (const auto& filename : problem.second) {
@@ -166,22 +158,18 @@ void processDirectory(const string& path) {
                 }
                 else if (isCppFile(filename)) {
                     FileName fn = parseFileName(filename);
-                    // cout << "filename: " << filename << " " << fn.status << endl;
                     if (fn.id == id) {
-                        // cpp_files.push_back(oj.first + "/" + fs::absolute(filename).string());
-                        cpp_files.push_back(oj.first + "/" + filename);
+                        cpp_files.push_back(make_pair(fn, oj.first + "/" + filename));
                         if (fn.status.empty()) {
-                            // cout << "Warning: " << filename << " status empty()" << endl;
+
                         }
                         if (fn.status == "AC") {
                             // cout << "!En1" << endl;
                             status = "AC";
                         }
-                        else if (status.empty() || fn.date > parseFileName(status).date ||
-                            (fn.date == parseFileName(status).date && (fn.count.empty() || safe_stoi(fn.count) > safe_stoi(parseFileName(status).count)))) {
-                            status = filename;
+                        else if (status != "AC" && !fn.status.empty()) {
+                            status = fn.status;
                         }
-                        // if (fn.pt == "AC") { // ??? 
                         if (fn.status == "AC") {
                             max_pt = 100;
                         }
@@ -192,42 +180,109 @@ void processDirectory(const string& path) {
                     }
                 }
             }
-            // cout << "status: " << status << "|" << status.length() << endl;
+            #ifdef OUT_Markdown
+            cout << oj.first << " | " << id << " | " << count << " | ";
+            #else
             cout << "#" << oj.first << "," << id << "," << count << ",";
+            #endif
             if (status.empty()) {
+                #ifdef OUT_Markdown
+                cout << "N/A | ";
+                #else
                 cout << "N/A,";
+                #endif
             }
             else {
-                // FileName fn = parseFileName(status); // ??? what are you doing?
                 if (status == "AC") {
+                    #ifdef OUT_Markdown
+                    cout << "AC | ";
+                    #else
                     cout << "AC,";
+                    #endif
                 }
                 else {
+                    #ifdef OUT_Markdown
+                    cout << status << " | ";
+                    #else
                     cout << status << ",";
+                    #endif
                 }
             }
-            if (max_pt == 0) {
+            if (max_pt < 0) {
+                // max_pt 默认值为 -1
+                #ifdef OUT_Markdown
+                cout << "N/A | ";
+                #else
                 cout << "N/A,";
+                #endif
             }
             else {
+                #ifdef OUT_Markdown
+                cout << max_pt << " | ";
+                #else
                 cout << max_pt << ",";
+                #endif
             }
+            #ifdef OUT_Markdown
+            cout << data_points.size() << " | ";
+            #else
             cout << data_points.size() << endl;
             cout << "  cpp files: ";
+            #endif
+            #ifdef OUT_Markdown
+            bool first_out = true; // 保证最后没有多余的逗号
+            #endif
             for (const auto& cpp_file : cpp_files) {
-                cout << cpp_file << " ";
+                #ifdef OUT_Markdown
+                if (first_out) cout << "[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
+                else cout << "<br>[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
+                first_out = false;
+                #else
+                cout << cpp_file.second << " ";
+                #endif
             }
+            #ifdef OUT_Markdown
+            cout << " | ";
+            #else
             cout << endl;
             cout << "  data points: ";
+            #endif
+            #ifdef OUT_Markdown
+            first_out = true;
+            #endif
             for (const auto& data_point : data_points) {
+                #ifdef OUT_Markdown
+                if (first_out) cout << data_point;
+                else cout << "<br>" << data_point;
+                first_out = false;
+                #else
                 cout << data_point << " ";
+                #endif
             }
+            #ifdef OUT_Markdown
+            #ifdef OUT_Checkbox
+            cout << " | " << (status == "AC" ? "<ul><li>[x] 完成</li></ul>" : "<ul><li>[ ] 未完成</li></ul>");
+            #endif
+            #endif
             cout << endl;
         }
     }
 }
 
 int main() {
+#ifdef OUT_Markdown
+    // 输出表头
+    cout << "OJ | ID | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量 | 代码提交文件 | 数据点文件";
+    #ifdef OUT_Checkbox
+    cout << " | 完成";
+    #endif
+    cout << endl;
+    cout << "-- | -- | ------- | ------------ | ------ | --------- | ------------ | ---------";
+    #ifdef OUT_Checkbox
+    cout << " | ---";
+    #endif
+    cout << endl;
+#endif
 #ifndef CI
     processDirectory("D:\\code-backup\\");
 #else
