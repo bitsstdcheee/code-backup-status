@@ -309,7 +309,7 @@ void processDirectory(const string& path) {
             }
             #ifdef OUT_Markdown
             #ifdef OUT_Checkbox
-            cout << " | " << (status == "AC" ? "[x]" : "[ ]");
+            cout << " | " << (status == "AC" ? "<ul><li>[x]</li></ul>" : "<ul><li>[ ]</li></ul>");
             #endif
             #endif
             cout << endl;
