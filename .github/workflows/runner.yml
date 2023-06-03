@@ -8,6 +8,8 @@ jobs:
       # secrets:
       # status-token: ${{ github.REPO_KEY }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: 克隆仓库 (bitsstdcheee/code-backup)
         uses: actions/checkout@v3
@@ -21,12 +23,16 @@ jobs:
       - name: 克隆仓库 (本仓库)
         uses: actions/checkout@v3
         with:
-          fetch-depth: 1
           path: status
+      - name: 获取当前分支
+        id: extract-branch
+        run: |
+            cd status
+            echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >>$GITHUB_OUTPUT
       - name: 编译 (Markdown)
         id: compile-markdown
         run: |
-          g++ status/main.cpp -o status/main_markdown -DCI -DOUT_Markdown
+          g++ status/main.cpp -o status/main_markdown -DCI -DOUT_Markdown -DOUT_Checkbox
       - name: 编译 (Out)
         id: compile-out
         run: |
@@ -49,6 +55,36 @@ jobs:
         if: always()
         run: |
           cat output.txt
+      - name: 更新 README.md
+        if: always() || steps.compile-markdown.conclusion == 'success'
+        run: |
+          cd status
+          cp -f ../output.md README.md
+      - name: 输出更改
+        run: |
+          cd status
+          git status
+          git diff --color
+      - name: 提交更改
+        id: commit-change
+        run: |
+          cd status
+          git add .
+          if [ -n "$(git status -s)" ]; then
+            echo "当前有更改"
+            echo "need_commit=1" >> $GITHUB_OUTPUT
+          else
+            echo "当前无需更改"
+            echo "need_commit=0" >> $GITHUB_OUTPUT
+          fi
+      - name: 提交更改并推送
+        uses: Andro999b/push@v1.3
+        if: always() && steps.commit-change.outputs.need_commit == 1
+        with:
+          directory: status
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: "[skip cl] 更新 README.md"
+          branch: ${{ steps.extract-branch.outputs.branch }}
       - name: 上传构件 (code-backup)
         if: always()
         uses: actions/upload-artifact@v3
