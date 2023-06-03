@@ -85,14 +85,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           message: "[skip cl] 更新 README.md"
           branch: ${{ steps.extract-branch.outputs.branch }}
-      - name: 上传构件 (code-backup)
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: code-backup-repo
-          path: |
-            code-backup
-            !code-backup/.git
       - name: 上传构件 (code-backup-status)
         if: always()
         uses: actions/upload-artifact@v3
