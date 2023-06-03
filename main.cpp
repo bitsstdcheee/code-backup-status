@@ -11,6 +11,9 @@ using namespace std;
 namespace fs = std::filesystem;
 
 const int oj_exclude_num = 10;
+const string repo_url = "https://github.com/bitsstdcheee/code-backup";
+const string repo_branch = "development";
+const string repo_prefix = repo_url + "/blob/" + repo_branch + "/";
 string oj_exclude[oj_exclude_num] = {
     "Draft Code",
     "Atcoder",
@@ -41,6 +44,19 @@ int safe_stoi(const string& str) {
     catch (const std::invalid_argument&) {
         return 0;
     }
+}
+// 输出时输出关键内容
+string getFileDescription(const FileName& fn, bool enable_AC = false) {
+    string res = fn.date + " " + fn.status;
+    if (!fn.pt.empty()) {
+        res = res + "/" + fn.pt;
+    }
+    if (enable_AC) {
+        if (fn.status == "AC") {
+            res = res + " :white_check_mark:";
+        }
+    }
+    return res;
 }
 // 解析文件名，提取关键词
 FileName parseFileName(const string& filename) {
@@ -179,7 +195,7 @@ void processDirectory(const string& path) {
     for (const auto& oj : oj_map) {
         for (const auto& problem : oj.second) {
             string id = problem.first;
-            vector<string> cpp_files;
+            vector<pair<FileName, string>> cpp_files;
             string status = "";
             int max_pt = -1;
             int count = 0;
@@ -196,7 +212,7 @@ void processDirectory(const string& path) {
                     // cout << "filename: " << filename << " " << fn.status << endl;
                     if (fn.id == id) {
                         // cpp_files.push_back(oj.first + "/" + fs::absolute(filename).string());
-                        cpp_files.push_back(oj.first + "/" + filename);
+                        cpp_files.push_back(make_pair(fn, oj.first + "/" + filename));
                         if (fn.status.empty()) {
                             // cout << "Warning: " << filename << " status empty()" << endl;
                         }
@@ -282,8 +298,8 @@ void processDirectory(const string& path) {
             #endif
             for (const auto& cpp_file : cpp_files) {
                 #ifdef OUT_Markdown
-                if (first_out) cout << cpp_file;
-                else cout << ", " << cpp_file;
+                if (first_out) cout << "[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
+                else cout << ", [" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
                 first_out = false;
                 #else
                 cout << cpp_file << " ";
