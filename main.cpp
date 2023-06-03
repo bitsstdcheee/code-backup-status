@@ -299,7 +299,7 @@ void processDirectory(const string& path) {
             for (const auto& cpp_file : cpp_files) {
                 #ifdef OUT_Markdown
                 if (first_out) cout << "[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
-                else cout << ", [" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
+                else cout << "<br>[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
                 first_out = false;
                 #else
                 cout << cpp_file.second << " ";
@@ -317,7 +317,7 @@ void processDirectory(const string& path) {
             for (const auto& data_point : data_points) {
                 #ifdef OUT_Markdown
                 if (first_out) cout << data_point;
-                else cout << ", " << data_point;
+                else cout << "<br>" << data_point;
                 first_out = false;
                 #else
                 cout << data_point << " ";
