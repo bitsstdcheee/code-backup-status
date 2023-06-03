@@ -1,0 +1,8 @@
+Github Actions:
+- .github/workflows/*
+
+源代码:
+- any: ['main.cpp']
+
+README:
+- any: ['README.md']
