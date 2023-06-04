@@ -2,6 +2,7 @@
     "clangd.fallbackFlags": [
         "-DOUT_Markdown",
         "-DOUT_ColorAC",
+        "-DOUT_DoubleBackslash",
         "-std=c++17"
     ]
 }

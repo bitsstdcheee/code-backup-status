@@ -113,24 +113,25 @@ string getOJName(const string& path) {
 }
 
 // 将文本直接插入 Katex 代码前进行必要的转义
-string KatexFormat(const string& str) {
+// 在某些环境的嵌套下可能需要双层转义, 此时打开 double_mode
+string KatexFormat(const string& str, bool double_mode = false) {
     string res = str;
     {
         // 反斜杠
         std::regex pattern(R"(\\)");
-        string replace_string(R"(\backslash)");
+        string replace_string(double_mode ? R"(\\backslash)" : R"(\backslash)");
         res = std::regex_replace(res, pattern, replace_string);
     }
     {
         // 百分号
         std::regex pattern(R"(%)");
-        string replace_string(R"(\%)");
+        string replace_string(double_mode ? R"(\\%)" : R"(\%)");
         res = std::regex_replace(res, pattern, replace_string);
     }
     {
         // 下划线
         std::regex pattern(R"(_)");
-        string replace_string(R"(\_)");
+        string replace_string(double_mode ? R"(\\_)" : R"(\_)");
         res = std::regex_replace(res, pattern, replace_string);
     }
     return res;
@@ -219,7 +220,13 @@ void processDirectory(const string& path) {
             if (status == "AC") cout << ColorAcceptedRGB;
             else if (status == "Waiting") cout << ColorDefaultRGB;  // Waiting 状态时 color 留空以保持默认颜色
             else cout << ColorUnacceptedRGB;
-            cout << "}{\\text{" << KatexFormat(id) << "}}$ | " << count << " | ";
+            cout << "}{\\text{" << KatexFormat(id, 
+            #ifdef OUT_DoubleBackslash
+            true
+            #else
+            false
+            #endif
+                ) << "}}$ | " << count << " | ";
             #else
             cout << id << " | " << count << " | ";
             #endif
