@@ -60,13 +60,10 @@ string getFileDescription(const FileName& fn, bool enable_AC = false) {
             res = res + " :white_check_mark:";
         }
     }
-<<<<<<< HEAD
-=======
     if (safe_stoi(fn.count) > 0) {
         // 存在重复计数编号则在后面注明
         res = res + " (" + fn.count + ")";
     }
->>>>>>> action-test
     return res;
 }
 // 解析文件名，提取关键词
@@ -182,10 +179,7 @@ void processDirectory(const string& path) {
             string id = problem.first;
             vector<pair<FileName, string>> cpp_files;
             string status = "";
-<<<<<<< HEAD
-=======
             string current_oj = oj.first;
->>>>>>> action-test
             int max_pt = -1;
             int count = 0;
             vector<string> data_points;
@@ -221,9 +215,6 @@ void processDirectory(const string& path) {
                 }
             }
             #ifdef OUT_Markdown
-<<<<<<< HEAD
-            cout << oj.first << " | " << id << " | " << count << " | ";
-=======
             cout << current_oj << " | " ;
             #ifdef OUT_ColorAC
             cout << "$\\textcolor{" ;
@@ -240,7 +231,6 @@ void processDirectory(const string& path) {
             #else
             cout << id << " | " << count << " | ";
             #endif
->>>>>>> action-test
             #else
             cout << "#" << oj.first << "," << id << "," << count << ",";
             #endif
