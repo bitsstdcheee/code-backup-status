@@ -263,11 +263,6 @@ void processDirectory(const string& path) {
                 cout << data_point << " ";
                 #endif
             }
-            #ifdef OUT_Markdown
-            #ifdef OUT_Checkbox
-            cout << " | " << (status == "AC" ? "<ul><li>[x] 完成</li></ul>" : "<ul><li>[ ] 未完成</li></ul>");
-            #endif
-            #endif
             cout << endl;
         }
     }
@@ -277,14 +272,8 @@ int main() {
 #ifdef OUT_Markdown
     // 输出表头
     cout << "OJ | ID | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量 | 代码提交文件 | 数据点文件";
-    #ifdef OUT_Checkbox
-    cout << " | 完成";
-    #endif
     cout << endl;
     cout << "-- | -- | ------- | ------------ | ------ | --------- | ------------ | ---------";
-    #ifdef OUT_Checkbox
-    cout << " | ---";
-    #endif
     cout << endl;
 #endif
 #ifndef CI
