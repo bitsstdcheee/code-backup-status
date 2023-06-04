@@ -10,6 +10,10 @@
 using namespace std;
 namespace fs = std::filesystem;
 
+const string ColorAcceptedRGB = "#52C41A";
+const string ColorUnacceptedRGB = "#E74C3C";
+const string ColorDefaultRGB = "";
+
 const int oj_exclude_num = 10;
 const string repo_url = "https://github.com/bitsstdcheee/code-backup";
 const string repo_branch = "development";
@@ -185,7 +189,16 @@ void processDirectory(const string& path) {
                 }
             }
             #ifdef OUT_Markdown
-            cout << current_oj << " | " << id << " | " << count << " | ";
+            cout << current_oj << " | " ;
+            #ifdef OUT_ColorAC
+            cout << "<font color=\"" ;
+            if (status == "AC") cout << ColorAcceptedRGB;
+            else if (status == "Waiting") cout << ColorDefaultRGB;  // Waiting 状态时 color 留空以保持默认颜色
+            else cout << ColorUnacceptedRGB;
+            cout << "\">" << id << "</font> | " << count << " | ";
+            #else
+            cout << id << " | " << count << " | ";
+            #endif
             #else
             cout << "#" << oj.first << "," << id << "," << count << ",";
             #endif

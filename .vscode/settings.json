@@ -1,6 +1,7 @@
 {
     "clangd.fallbackFlags": [
         "-DOUT_Markdown",
+        "-DOUT_ColorAC",
         "-std=c++17"
     ]
 }
