@@ -185,7 +185,7 @@ void processDirectory(const string& path) {
                 }
             }
             #ifdef OUT_Markdown
-            cout << oj.first << " | " << id << " | " << count << " | ";
+            cout << current_oj << " | " << id << " | " << count << " | ";
             #else
             cout << "#" << oj.first << "," << id << "," << count << ",";
             #endif
