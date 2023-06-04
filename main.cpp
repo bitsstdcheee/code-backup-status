@@ -10,6 +10,10 @@
 using namespace std;
 namespace fs = std::filesystem;
 
+const string ColorAcceptedRGB = "#52C41A";
+const string ColorUnacceptedRGB = "#E74C3C";
+const string ColorDefaultRGB = "#FFFFFF";
+
 const int oj_exclude_num = 10;
 const string repo_url = "https://github.com/bitsstdcheee/code-backup";
 const string repo_branch = "development";
@@ -56,6 +60,13 @@ string getFileDescription(const FileName& fn, bool enable_AC = false) {
             res = res + " :white_check_mark:";
         }
     }
+<<<<<<< HEAD
+=======
+    if (safe_stoi(fn.count) > 0) {
+        // 存在重复计数编号则在后面注明
+        res = res + " (" + fn.count + ")";
+    }
+>>>>>>> action-test
     return res;
 }
 // 解析文件名，提取关键词
@@ -104,6 +115,31 @@ string getOJName(const string& path) {
     return path.substr(pos + 1);
 }
 
+// 将文本直接插入 Katex 代码前进行必要的转义
+// 在某些环境的嵌套下可能需要双层转义, 此时打开 double_mode
+string KatexFormat(const string& str, bool double_mode = false) {
+    string res = str;
+    {
+        // 反斜杠
+        std::regex pattern(R"(\\)");
+        string replace_string(double_mode ? R"(\\backslash)" : R"(\backslash)");
+        res = std::regex_replace(res, pattern, replace_string);
+    }
+    {
+        // 百分号
+        std::regex pattern(R"(%)");
+        string replace_string(double_mode ? R"(\\%)" : R"(\%)");
+        res = std::regex_replace(res, pattern, replace_string);
+    }
+    {
+        // 下划线
+        std::regex pattern(R"(_)");
+        string replace_string(double_mode ? R"(\\_)" : R"(\_)");
+        res = std::regex_replace(res, pattern, replace_string);
+    }
+    return res;
+}
+
 // 统计每个OJ中每道题目是否通过，历史分数，提交次数，代码文件（以文件链接输出），这道题的数据点（如有则输出）
 void processDirectory(const string& path) {
     map<string, map<string, vector<string>>> oj_map;
@@ -146,6 +182,10 @@ void processDirectory(const string& path) {
             string id = problem.first;
             vector<pair<FileName, string>> cpp_files;
             string status = "";
+<<<<<<< HEAD
+=======
+            string current_oj = oj.first;
+>>>>>>> action-test
             int max_pt = -1;
             int count = 0;
             vector<string> data_points;
@@ -181,7 +221,26 @@ void processDirectory(const string& path) {
                 }
             }
             #ifdef OUT_Markdown
+<<<<<<< HEAD
             cout << oj.first << " | " << id << " | " << count << " | ";
+=======
+            cout << current_oj << " | " ;
+            #ifdef OUT_ColorAC
+            cout << "$\\textcolor{" ;
+            if (status == "AC") cout << ColorAcceptedRGB;
+            else if (status == "Waiting") cout << ColorDefaultRGB;  // Waiting 状态时 color 留空以保持默认颜色
+            else cout << ColorUnacceptedRGB;
+            cout << "}{\\text{" << KatexFormat(id, 
+            #ifdef OUT_DoubleBackslash
+            true
+            #else
+            false
+            #endif
+                ) << "}}$ | " << count << " | ";
+            #else
+            cout << id << " | " << count << " | ";
+            #endif
+>>>>>>> action-test
             #else
             cout << "#" << oj.first << "," << id << "," << count << ",";
             #endif
@@ -252,8 +311,8 @@ void processDirectory(const string& path) {
             #endif
             for (const auto& data_point : data_points) {
                 #ifdef OUT_Markdown
-                if (first_out) cout << data_point;
-                else cout << "<br>" << data_point;
+                if (first_out) cout << "[" << data_point << "](" << repo_prefix << current_oj << "/" << id << "_" << data_point << ")";
+                else cout << "<br>[" << data_point << "](" << repo_prefix << current_oj << "/" << id << "_" << data_point << ")";
                 first_out = false;
                 #else
                 cout << data_point << " ";
@@ -273,14 +332,8 @@ int main() {
 #ifdef OUT_Markdown
     // 输出表头
     cout << "OJ | ID | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量 | 代码提交文件 | 数据点文件";
-    #ifdef OUT_Checkbox
-    cout << " | 完成";
-    #endif
     cout << endl;
     cout << "-- | -- | ------- | ------------ | ------ | --------- | ------------ | ---------";
-    #ifdef OUT_Checkbox
-    cout << " | ---";
-    #endif
     cout << endl;
 #endif
 #ifndef CI

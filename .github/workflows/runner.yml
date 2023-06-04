@@ -33,7 +33,7 @@ jobs:
       - name: 编译 (Markdown)
         id: compile-markdown
         run: |
-          g++ status/main.cpp -o status/main_markdown -DCI -DOUT_Markdown -DOUT_Checkbox
+          g++ status/main.cpp -o status/main_markdown -DCI -DOUT_Markdown -DOUT_ColorAC -DOUT_DoubleBackslash
       - name: 编译 (Out)
         id: compile-out
         run: |
