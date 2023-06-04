@@ -56,6 +56,10 @@ string getFileDescription(const FileName& fn, bool enable_AC = false) {
             res = res + " :white_check_mark:";
         }
     }
+    if (safe_stoi(fn.count) > 0) {
+        // 存在重复计数编号则在后面注明
+        res = res + " (" + fn.count + ")";
+    }
     return res;
 }
 // 解析文件名，提取关键词
@@ -146,6 +150,7 @@ void processDirectory(const string& path) {
             string id = problem.first;
             vector<pair<FileName, string>> cpp_files;
             string status = "";
+            string current_oj = oj.first;
             int max_pt = -1;
             int count = 0;
             vector<string> data_points;
@@ -251,8 +256,8 @@ void processDirectory(const string& path) {
             #endif
             for (const auto& data_point : data_points) {
                 #ifdef OUT_Markdown
-                if (first_out) cout << data_point;
-                else cout << "<br>" << data_point;
+                if (first_out) cout << "[" << data_point << "](" << repo_prefix << current_oj << "/" << id << "_" << data_point << ")";
+                else cout << "<br>[" << data_point << "](" << repo_prefix << current_oj << "/" << id << "_" << data_point << ")";
                 first_out = false;
                 #else
                 cout << data_point << " ";
