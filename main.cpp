@@ -198,6 +198,7 @@ void processDirectory(const string& path) {
 
                         }
                         if (fn.status == "AC") {
+                            // cout << "!En1" << endl;
                             status = "AC";
                         }
                         else if (status != "AC" && !fn.status.empty()) {
@@ -307,6 +308,11 @@ void processDirectory(const string& path) {
                 cout << data_point << " ";
                 #endif
             }
+            #ifdef OUT_Markdown
+            #ifdef OUT_Checkbox
+            cout << " | " << (status == "AC" ? "<ul><li>[x] 完成</li></ul>" : "<ul><li>[ ] 未完成</li></ul>");
+            #endif
+            #endif
             cout << endl;
         }
     }
