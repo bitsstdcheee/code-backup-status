@@ -12,7 +12,7 @@ namespace fs = std::filesystem;
 
 const string ColorAcceptedRGB = "#52C41A";
 const string ColorUnacceptedRGB = "#E74C3C";
-const string ColorDefaultRGB = "";
+const string ColorDefaultRGB = "#FFFFFF";
 
 const int oj_exclude_num = 10;
 const string repo_url = "https://github.com/bitsstdcheee/code-backup";
@@ -112,6 +112,30 @@ string getOJName(const string& path) {
     return path.substr(pos + 1);
 }
 
+// 将文本直接插入 Katex 代码前进行必要的转义
+string KatexFormat(const string& str) {
+    string res = str;
+    {
+        // 反斜杠
+        std::regex pattern(R"(\\)");
+        string replace_string(R"(\backslash)");
+        res = std::regex_replace(res, pattern, replace_string);
+    }
+    {
+        // 百分号
+        std::regex pattern(R"(%)");
+        string replace_string(R"(\%)");
+        res = std::regex_replace(res, pattern, replace_string);
+    }
+    {
+        // 下划线
+        std::regex pattern(R"(_)");
+        string replace_string(R"(\_)");
+        res = std::regex_replace(res, pattern, replace_string);
+    }
+    return res;
+}
+
 // 统计每个OJ中每道题目是否通过，历史分数，提交次数，代码文件（以文件链接输出），这道题的数据点（如有则输出）
 void processDirectory(const string& path) {
     map<string, map<string, vector<string>>> oj_map;
@@ -191,11 +215,11 @@ void processDirectory(const string& path) {
             #ifdef OUT_Markdown
             cout << current_oj << " | " ;
             #ifdef OUT_ColorAC
-            cout << "<font color=\"" ;
+            cout << "$\\textcolor{" ;
             if (status == "AC") cout << ColorAcceptedRGB;
             else if (status == "Waiting") cout << ColorDefaultRGB;  // Waiting 状态时 color 留空以保持默认颜色
             else cout << ColorUnacceptedRGB;
-            cout << "\">" << id << "</font> | " << count << " | ";
+            cout << "}{\\text{" << KatexFormat(id) << "}}$ | " << count << " | ";
             #else
             cout << id << " | " << count << " | ";
             #endif
