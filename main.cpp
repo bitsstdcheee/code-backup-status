@@ -31,6 +31,43 @@ string oj_exclude[oj_exclude_num] = {
     "work"
 };
 
+// ojProblemSetPrefix 用于存储每个OJ的题目集的 url 前缀, bool 存储是否为纯数字
+std::map<string, pair<string, bool> > ojProblemSetPrefix;
+
+// initOjProblemSetPrefix 用于初始化 ojProblemSetPrefix
+void initOjProblemSetPrefix() {
+    auto& op = ojProblemSetPrefix;
+    op["Luogu"] = make_pair("https://www.luogu.com.cn/problem/", false);
+    // op["BZOJ"]  // BZOJ 目前找不到相应评测网站
+    op["HDU"] = make_pair("https://acm.hdu.edu.cn/showproblem.php?pid=", true);
+    op["LibreOJ"] = make_pair("https://loj.ac/p/", true);
+    op["POJ"] = make_pair("http://poj.org/problem?id=", true);
+    op["SPOJ"] = make_pair("https://www.spoj.com/problems/", false); // SPOJ 题目 id 为大写英文字母的组合
+}
+
+// PureNumber: 将 id 中的纯数字提取出来
+string PureNumber(string id) {
+    string res = "";
+    for (auto& ch : id) {
+        if (isdigit(ch)) res += ch;
+    }
+    return res;
+}
+
+// ProblemUrlCheck 用于判断是否存在某个 OJ 的题目集 url
+bool ProblemUrlCheck(string oj) {
+    auto& op = ojProblemSetPrefix;
+    return !(op.find(oj) == op.end());
+}
+
+// ProblemUrl 用于输出某个 OJ 的题目集 url
+string ProblemUrl(string oj, string id) {
+    if (!ProblemUrlCheck(oj)) return "";
+    auto& op = ojProblemSetPrefix;
+    if (op[oj].second) return op[oj].first + PureNumber(id);
+    else return op[oj].first + id;
+}
+
 // 定义文件名中的关键词
 struct FileName {
     string id;
@@ -215,7 +252,16 @@ void processDirectory(const string& path) {
                 }
             }
             #ifdef OUT_Markdown
+            #ifdef OUT_ProblemUrl
+            if (ProblemUrlCheck(current_oj)) {
+                cout << "[" << current_oj << "](" << ProblemUrl(current_oj, id) << ") | " ;
+            } else {
+                // 当前 oj 不支持 url, 回退到原来格式
+                cout << current_oj << " | " ;
+            }
+            #else
             cout << current_oj << " | " ;
+            #endif
             #ifdef OUT_ColorAC
             cout << "$\\textcolor{" ;
             if (status == "AC") cout << ColorAcceptedRGB;
@@ -319,6 +365,9 @@ void processDirectory(const string& path) {
 }
 
 int main() {
+#ifdef OUT_ProblemUrl
+initOjProblemSetPrefix();
+#endif
 #ifdef OUT_Markdown
     // 输出表头
     cout << "OJ | ID | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量 | 代码提交文件 | 数据点文件";

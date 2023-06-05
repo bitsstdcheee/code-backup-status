@@ -3,6 +3,7 @@
         "-DOUT_Markdown",
         "-DOUT_ColorAC",
         "-DOUT_DoubleBackslash",
+        "-DOUT_ProblemUrl",
         "-std=c++17"
     ]
 }
