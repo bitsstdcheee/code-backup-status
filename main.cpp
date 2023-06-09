@@ -43,6 +43,7 @@ void initOjProblemSetPrefix() {
     op["LibreOJ"] = make_pair("https://loj.ac/p/", true);
     op["POJ"] = make_pair("http://poj.org/problem?id=", true);
     op["SPOJ"] = make_pair("https://www.spoj.com/problems/", false); // SPOJ 题目 id 为大写英文字母的组合
+    op["MagicOJ"] = make_pair("http://www.magicoj.com/p/", true);
 }
 
 // PureNumber: 将 id 中的纯数字提取出来
