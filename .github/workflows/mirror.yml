@@ -10,17 +10,35 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: 克隆仓库 (bitsstdcheee/code-backup)
+      - name: 克隆仓库 (github/bitsstdcheee/code-backup)
         uses: actions/checkout@v3
         with:
           repository: bitsstdcheee/code-backup
           ref: development
-          path: code-backup
+          path: code-backup-github
             # token: ${{ secrets.status-token }}
           token: ${{ secrets.REPO_KEY }}
           fetch-depth: 1
+      - name: 克隆仓库 (gitee/bitsstdcheee/code-backup)
+        uses: actions/checkout@v3
+        with:
+          github-server-url: 'https://gitee.com'
+          repository: bitsstdcheee/code-backup
+          ref: development
+          path: code-backup-gitee
+            # token: ${{ secrets.status-token }}
+          token: ${{ secrets.GITEE }}
+          fetch-depth: 1
+
       - name: 同步仓库 (Github -> Gitee)
+        id: sync-first
         run: |
-          cd code-backup
+          cd code-backup-github
           git remote add gitee https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup
           git push gitee development --no-verify
+      - name: 同步仓库 (Gitee -> Github)
+        if: ${{ error() }}
+        run: |
+          cd code-backup-gitee
+          git remote add github https://bitsstdcheee:${{ secrets.REPO_KEY }}@github.com/bitsstdcheee/code-backup
+          git push github development --no-verify
