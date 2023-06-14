@@ -1,0 +1,26 @@
+name: Mirror
+on:
+  workflow_dispatch:
+jobs:
+  update_status:
+    name: 更新代码状态
+      # secrets:
+      # status-token: ${{ github.REPO_KEY }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: 克隆仓库 (bitsstdcheee/code-backup)
+        uses: actions/checkout@v3
+        with:
+          repository: bitsstdcheee/code-backup
+          ref: development
+          path: code-backup
+            # token: ${{ secrets.status-token }}
+          token: ${{ secrets.REPO_KEY }}
+          fetch-depth: 1
+      - name: 同步仓库 (Github -> Gitee)
+        run: |
+          cd code-backup
+          git remote add gitee https://gitee.com/bitsstdcheee/code-backup
+          git push gitee development --no-verify
