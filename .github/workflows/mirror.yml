@@ -37,7 +37,7 @@ jobs:
           git remote add gitee https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup
           git push gitee development --no-verify
       - name: 同步仓库 (Gitee -> Github)
-        if: ${{ error() }}
+        if: ${{ failure() }}
         run: |
           cd code-backup-gitee
           git remote add github https://bitsstdcheee:${{ secrets.REPO_KEY }}@github.com/bitsstdcheee/code-backup
