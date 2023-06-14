@@ -22,5 +22,5 @@ jobs:
       - name: 同步仓库 (Github -> Gitee)
         run: |
           cd code-backup
-          git remote add gitee https://gitee.com/bitsstdcheee/code-backup
+          git remote add gitee https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup
           git push gitee development --no-verify
