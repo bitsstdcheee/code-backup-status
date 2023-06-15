@@ -28,8 +28,8 @@ jobs:
         run: |
           cd code-backup-github
           git remote add gitee https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup
-          ! git push gitee development --no-verify
-          result=$?
+          result=0
+          git push gitee development --no-verify || result=1
           echo "结果:$result"
           echo "result=$result" >> "$GITHUB_OUTPUT"
           exit 0
