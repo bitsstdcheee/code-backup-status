@@ -3,6 +3,8 @@ on:
   push:
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: 0 */2 * * *
 jobs:
   update_status:
     name: 更新代码状态
