@@ -29,8 +29,10 @@ jobs:
           cd code-backup-github
           git remote add gitee https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup
           result=$(git push gitee development --no-verify)
+          result=$?
           echo "结果:$result"
           echo "result=$result" >> "$GITHUB_OUTPUT"
+          exit 0
       - name: 同步仓库 (Gitee -> Github)
         if: ${{ failure() || steps.sync-first.outputs.result != 0 }}
         run: |
