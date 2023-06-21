@@ -6,7 +6,7 @@ str_not_signed = '请登录洛谷进行打卡，获得今日运势。'
 str_have_punched = '今天你已经打过卡了哦，要一步一个脚印，不能急于求成！'
 
 def cookie_from_file():
-    with open('cookie.txt', 'r', encoding='utf-8') as f:
+    with open('./cookie.txt', 'r', encoding='utf-8') as f:
         return f.readline()
 
 def punch(cookie):
