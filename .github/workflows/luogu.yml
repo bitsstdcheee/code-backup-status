@@ -1,8 +1,8 @@
 name: Luogu
 on:
   workflow_dispatch:
-  schedule:
-    - cron: 0 */4 * * *
+  #schedule:
+    #- cron: 0 */4 * * *
 jobs:
   update_luogu_punch:
     name: 更新洛谷每日打卡
