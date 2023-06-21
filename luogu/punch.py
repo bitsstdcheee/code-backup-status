@@ -13,7 +13,7 @@ def cookie_from_file():
         return data[0]
 
 def punch(cookie):
-    return requests.get('https://www.luogu.com.cn/index/ajax_punch', headers={
+    res = requests.get('https://www.luogu.com.cn/index/ajax_punch', headers={
         "Host""Host": "www.luogu.com.cn",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.51",
         "Sec-Ch-Ua": '"Not.A/Brand";v="8", "Chromium";v="114", "Microsoft Edge";v="114"',
@@ -28,6 +28,8 @@ def punch(cookie):
         "TE": "Trailers",
         "Cookie": cookie
     })
+    print(res.text)
+    return res
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
