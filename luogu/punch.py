@@ -29,8 +29,10 @@ def punch(cookie):
         "TE": "Trailers",
         "Cookie": cookie
     })
-    print(res.text)
-    return res
+    dt = res.text
+    dt = dt.decode('unicode-escape').encode('utf-8')
+    print(dt)
+    return dt
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
