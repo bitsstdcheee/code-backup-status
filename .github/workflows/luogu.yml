@@ -30,7 +30,8 @@ jobs:
           run: |
             cp ./code/Luogu/cookie.txt ./status/luogu/cookie.txt
             ls ./status/luogu
-            python ./status/luogu/punch.py file
+            cd ./status/luogu
+            python punch.py file
         - run: |
             curl -L \
             -X POST \
