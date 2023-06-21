@@ -7,7 +7,10 @@ str_have_punched = '今天你已经打过卡了哦，要一步一个脚印，不
 
 def cookie_from_file():
     with open('./cookie.txt', 'r', encoding='utf-8') as f:
-        return f.readline()
+        data = f.read().splitlines()
+        if len(data) < 1:
+            return ''
+        return data[0]
 
 def punch(cookie):
     return requests.get('https://www.luogu.com.cn/index/ajax_punch', headers={
