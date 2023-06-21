@@ -30,7 +30,8 @@ def punch(cookie):
         "Cookie": cookie
     })
     dt = res.text
-    dt = dt.decode('unicode-escape').encode('utf-8')
+    print(dt)
+    dt = dt.encode('utf-8').decode('unicode-escape')
     print(dt)
     return dt
 
@@ -43,7 +44,7 @@ if __name__ == '__main__':
         print("将从文本中读取 cookie")
     else:
         in_cookie = sys.argv[1]
-    res = json.loads(punch(in_cookie).text)['message']
+    res = json.loads(punch(in_cookie))['message']
     if res == str_not_signed:
         print("用户尚未登录")
         exit(2)
