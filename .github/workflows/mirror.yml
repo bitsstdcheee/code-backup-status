@@ -2,7 +2,7 @@ name: Mirror
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 */2 * * *
+    - cron: "*/30 * * * *"
 jobs:
   update_status:
     name: 更新代码状态
