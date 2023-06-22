@@ -25,6 +25,9 @@ jobs:
               path: status
               token: ${{ secrets.REPO_KEY }}
               fetch-depth: 1
+        - name: 安装 bs4
+          run: |
+            sudo pip3 install Beautifulsoup4 
         - name: 运行洛谷打卡
           run: |
             cp ./code/Luogu/cookie.txt ./status/luogu/cookie.txt
