@@ -63,29 +63,7 @@ if __name__ == '__main__':
     if code == 200:
         # 未打卡且打卡成功
         print("打卡请求正常返回")
-        content = res['more']['html']
-        soup = BeautifulSoup(content, 'html.parser')
-        print(soup.getText())
-        pattern = re.compile(R'(bitsstdcheee 的运势)(?P<status>§.+§)[\n\s]+(?P<first>(?:\S[\S\x20]+\n)+)[\n\s]+(?P<second>(?:\S[\S\x20]+\n)+)[\n\s]+你已经在洛谷连续打卡了 (?P<day>\S+) 天')
-        result = pattern.match(soup.getText())
-        # print(result.groupdict())
-        reg = result.groupdict()
-        utc_dt = datetime.utcnow()
-        dt = utc_dt.astimezone(timezone(timedelta(hours=8))) # UTF+8
-        dfs = dt.strftime('%Y/%m/%d')
-        out = f'\n\n{dfs}\nbitsstdcheee 的运势\n{reg["status"]}\n{reg["first"]}{reg["second"]}\n'
-        print(out)
-        print("尝试写入 lucky.txt")
-        with open('lucky.txt', 'a+', encoding='utf-8') as luckyf:
-            luckyf.write(out)
-        with open('lucky.txt', 'r', encoding='utf-8') as f1:
-            ld = f1.read()
-            pattern1 = re.compile(R'\n{3,}')
-            result1 = pattern1.sub('\n\n', ld)
-            pattern2 = re.compile(R'\n{2,}$')
-            result2 = pattern2.sub('', result1)
-        with open('lucky.txt', 'w', encoding='utf-8') as luckyout:
-            luckyout.write(result2)
+        print("返回信息未处理")
         exit(0)
         
 

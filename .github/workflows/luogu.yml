@@ -35,27 +35,14 @@ jobs:
             ls ./status/luogu
             cd ./status/luogu
             python punch.py file
-        - run: |
-            curl -L \
-            -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            https://api.github.com/repos/bitsstdcheee/code-backup-status/actions/workflows/58944712/dispatches \
-            -d '{"ref":"main"}'
-        - name: 添加更改
-          run: |
-            cp -rf ./status/luogu/lucky.txt ./code/lucky.txt
-            cd ./code/
-            git status
-            git add .
-        - name: 提交更改
-          uses: bitsstdcheee/action-push@v1.4.1
+        - name: 上传构件
+          uses: actions/upload-artifact@v3
           with:
-              github_token: ${{ secrets.REPO_KEY }}
-              message: "Update lucky (bot)"
-              branch: "development"
-              directory: ./code/
+            name: punch-file
+            path: |
+              ./status/luogu
+
+            
         # https://api.github.com/repos/bitsstdcheee/code-backup-status/actions/workflows
         # 59194359: labeler
         # 60946645: luogu
