@@ -18,6 +18,11 @@ const int oj_exclude_num = 10;
 const string repo_url = "https://github.com/bitsstdcheee/code-backup";
 const string repo_branch = "development";
 const string repo_prefix = repo_url + "/blob/" + repo_branch + "/";
+
+const string markdown_pre = "![Luogu](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/luogu.yml/badge.svg)" + 
+"![Mirror](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/mirror.yml/badge.svg)" + 
+"![Runner](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/runner.yml/badge.svg)";
+
 string oj_exclude[oj_exclude_num] = {
     "Draft Code",
     "Atcoder",
@@ -372,6 +377,7 @@ int main() {
 initOjProblemSetPrefix();
 #endif
 #ifdef OUT_Markdown
+    cout << markdown_pre << endl;
     // 输出表头
     cout << "OJ | ID | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量 | 代码提交文件 | 数据点文件";
     cout << endl;
