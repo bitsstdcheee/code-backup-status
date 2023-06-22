@@ -221,6 +221,8 @@ void processDirectory(const string& path) {
             int max_pt = -1;
             int count = 0;
             vector<string> data_points;
+            vector<string> problem_second = problem.second;
+            sort(problem_second.begin(), problem_second.end());
             for (const auto& filename : problem.second) {
                 if (isDataFile(filename)) {
                     size_t pos = filename.find_last_of('_');
