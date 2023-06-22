@@ -228,7 +228,7 @@ void processDirectory(const string& path) {
             vector<string> data_points;
             vector<string> problem_second = problem.second;
             sort(problem_second.begin(), problem_second.end());
-            for (const auto& filename : problem.second) {
+            for (const auto& filename : problem_second) {
                 if (isDataFile(filename)) {
                     size_t pos = filename.find_last_of('_');
                     if (pos != string::npos) {
