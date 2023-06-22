@@ -17,7 +17,6 @@ jobs:
               ref: development
               path: code
               token: ${{ secrets.REPO_KEY }}
-              fetch-depth: 1
         - name: 克隆仓库 (bitsstdcheee/code-backup-status)
           uses: actions/checkout@v3
           with:
@@ -29,6 +28,7 @@ jobs:
         - name: 运行洛谷打卡
           run: |
             cp ./code/Luogu/cookie.txt ./status/luogu/cookie.txt
+            cp ./code/lucky.txt ./status/luogu/lucky.txt
             ls ./status/luogu
             cd ./status/luogu
             python punch.py file
@@ -40,6 +40,18 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
             https://api.github.com/repos/bitsstdcheee/code-backup-status/actions/workflows/58944712/dispatches \
             -d '{"ref":"main"}'
+        - name: 添加更改
+          run: |
+            cp -rf ./status/luogu/lucky.txt ./code/lucky.txt
+            cd ./code/
+            git status
+            git add .
+        - name: 提交更改
+          uses: Andro999b/push@v1.3
+          with:
+              github_token: ${{ secrets.REPO_KEY }}
+              message: "Update lucky (bot)"
+              branch: "development"
         # https://api.github.com/repos/bitsstdcheee/code-backup-status/actions/workflows
         # 59194359: labeler
         # 60946645: luogu
