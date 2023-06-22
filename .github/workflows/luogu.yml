@@ -50,11 +50,12 @@ jobs:
             git status
             git add .
         - name: 提交更改
-          uses: Andro999b/push@v1.3
+          uses: bitsstdcheee/push@v1.4.1
           with:
               github_token: ${{ secrets.REPO_KEY }}
               message: "Update lucky (bot)"
               branch: "development"
+              directory: ./code/
         # https://api.github.com/repos/bitsstdcheee/code-backup-status/actions/workflows
         # 59194359: labeler
         # 60946645: luogu
