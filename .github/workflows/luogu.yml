@@ -50,7 +50,7 @@ jobs:
             git status
             git add .
         - name: 提交更改
-          uses: bitsstdcheee/push@v1.4.1
+          uses: bitsstdcheee/action-push@v1.4.1
           with:
               github_token: ${{ secrets.REPO_KEY }}
               message: "Update lucky (bot)"
