@@ -21,14 +21,8 @@ jobs:
             # token: ${{ secrets.status-token }}
           token: ${{ secrets.REPO_KEY }}
       - name: 克隆仓库 (gitee/bitsstdcheee/code-backup)
-        uses: actions/checkout@v3
-        with:
-          repository: bitsstdcheee/code-backup
-          ref: development
-          path: code-backup-gitee
-            # token: ${{ secrets.status-token }}
-          token: ${{ secrets.GITEE }}
-          github-server-url: https://gitee.com
+        run: |
+           git clone https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup code-backup-gitee
       - name: 同步仓库 (Github -> Gitee)
         id: sync-first
         run: |
