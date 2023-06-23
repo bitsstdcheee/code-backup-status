@@ -21,7 +21,7 @@ jobs:
             # token: ${{ secrets.status-token }}
           token: ${{ secrets.REPO_KEY }}
       - name: 克隆仓库 (gitee/bitsstdcheee/code-backup)
-        uses: action/checkout@v3
+        uses: actions/checkout@v3
         with:
           repository: bitsstdcheee/code-backup
           ref: development
