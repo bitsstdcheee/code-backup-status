@@ -1,6 +1,10 @@
 name: Runner
 on:
   push:
+    paths:
+      - main.cpp
+      - .gitignore
+      - .github/workflows/runner.yml
   pull_request:
   workflow_dispatch:
   schedule:
