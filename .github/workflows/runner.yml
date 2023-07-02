@@ -1,4 +1,7 @@
 name: Runner
+concurrency:
+  group: runner
+  cancel-in-progress: true
 on:
   push:
     paths:
