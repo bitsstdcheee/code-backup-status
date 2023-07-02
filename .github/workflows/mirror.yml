@@ -28,14 +28,14 @@ jobs:
           token: ${{ secrets.REPO_KEY }}
       - name: 克隆仓库 (gitee/bitsstdcheee/code-backup)
         run: |
-          ::add-mask::${{ secrets.GITEE }}
-          ::add-mask::${{ secrets.REPO_KEY }}
+          echo "::add-mask::${{ secrets.GITEE }}"
+          echo "::add-mask::${{ secrets.REPO_KEY }}"
           git clone https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup code-backup-gitee
       - name: 同步仓库 (Github -> Gitee)
         id: sync-first
         run: |
-          ::add-mask::${{ secrets.GITEE }}
-          ::add-mask::${{ secrets.REPO_KEY }}
+          echo "::add-mask::${{ secrets.GITEE }}"
+          echo "::add-mask::${{ secrets.REPO_KEY }}"
           cd code-backup-github
           git remote add gitee https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup
           result=0
@@ -47,8 +47,8 @@ jobs:
         id: sync-second
         if: ${{ failure() || steps.sync-first.outputs.result != 0 }}
         run: |
-          ::add-mask::${{ secrets.GITEE }}
-          ::add-mask::${{ secrets.REPO_KEY }}
+          echo "::add-mask::${{ secrets.GITEE }}"
+          echo "::add-mask::${{ secrets.REPO_KEY }}"
           cd code-backup-gitee
           git remote add github https://bitsstdcheee:${{ secrets.REPO_KEY }}@github.com/bitsstdcheee/code-backup
           result=0
@@ -58,8 +58,8 @@ jobs:
       - name: 尝试 Auto Merge (基底 Gitee)
         if: ${{ failure() || steps.sync-second.outputs.result != 0}}
         run: |
-          ::add-mask::${{ secrets.GITEE }}
-          ::add-mask::${{ secrets.REPO_KEY }}
+          echo "::add-mask::${{ secrets.GITEE }}"
+          echo "::add-mask::${{ secrets.REPO_KEY }}"
           cd code-backup-gitee
           git remote add gitee https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup
           git remote add github https://bitsstdcheee:${{ secrets.REPO_KEY }}@github.com/bitsstdcheee/code-backup
