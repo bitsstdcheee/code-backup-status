@@ -25,7 +25,7 @@ jobs:
           token: ${{ secrets.REPO_KEY }}
       - name: 克隆仓库 (gitee/bitsstdcheee/code-backup)
         run: |
-           git clone https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup code-backup-gitee
+          git clone https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup code-backup-gitee
       - name: 同步仓库 (Github -> Gitee)
         id: sync-first
         run: |
@@ -37,8 +37,20 @@ jobs:
           echo "result=$result" >> "$GITHUB_OUTPUT"
           exit 0
       - name: 同步仓库 (Gitee -> Github)
+        id: sync-second
         if: ${{ failure() || steps.sync-first.outputs.result != 0 }}
         run: |
           cd code-backup-gitee
           git remote add github https://bitsstdcheee:${{ secrets.REPO_KEY }}@github.com/bitsstdcheee/code-backup
-          git push github development --no-verify
+          result=0
+          git push github development --no-verify || result=1
+          echo "结果:$result"
+          echo "result=$result" >> "$GITHUB_OUTPUT"
+      - name: 尝试 Auto Merge (基地 Github)
+        if: ${{ failure() && steps.sync-second.outputs.result != 0}}
+        run: |
+          cd code-backup-github
+          git config --global pull.rebase false
+          git pull gitee
+          git push gitee
+          git push github
