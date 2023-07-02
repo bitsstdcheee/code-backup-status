@@ -1,4 +1,7 @@
 name: Mirror
+concurrency:
+  group: mirror
+  cancel-in-progress: true
 on:
   workflow_dispatch:
   schedule:
@@ -46,11 +49,11 @@ jobs:
           git push github development --no-verify || result=1
           echo "结果:$result"
           echo "result=$result" >> "$GITHUB_OUTPUT"
-      - name: 尝试 Auto Merge (基底 Github)
+      - name: 尝试 Auto Merge (基底 Gitee)
         if: ${{ failure() || steps.sync-second.outputs.result != 0}}
         run: |
-          cd code-backup-github
+          cd code-backup-gitee
           git config --global pull.rebase false
-          git pull gitee
+          git pull github
           git push gitee
           git push github
