@@ -3,6 +3,9 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "*/30 * * * *"
+  push:
+    paths:
+      - '.github/workflows/mirror.yml'
 jobs:
   update_status:
     name: 更新代码状态
