@@ -54,6 +54,7 @@ jobs:
         run: |
           cd code-backup-gitee
           git config --global --add pull.rebase false
-          git pull github development:development --commit
-          git push gitee
+          git fetch github development:github-mirror
+          git merge github-mirror --commit -e -m "Auto Merge from Github"
           git push github
+          git push gitee
