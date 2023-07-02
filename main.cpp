@@ -405,6 +405,7 @@ int main() {
 #ifdef OUT_ProblemUrl
 initOjProblemSetPrefix();
 #endif
+initOjHomeUrl();
 #ifdef OUT_Markdown
     cout << markdown_pre << endl;
     outputOjUrl();
