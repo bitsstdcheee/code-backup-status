@@ -39,6 +39,10 @@ string oj_exclude[oj_exclude_num] = {
 // ojProblemSetPrefix 用于存储每个OJ的题目集的 url 前缀, bool 存储是否为纯数字
 std::map<string, pair<string, bool> > ojProblemSetPrefix;
 
+// ojHomeUrl 用户存储每个OJ的主页 url
+// pair<name: string, url: string> 
+std::map<string, pair<string, string> > ojHomeUrl;
+
 // initOjProblemSetPrefix 用于初始化 ojProblemSetPrefix
 void initOjProblemSetPrefix() {
     auto& op = ojProblemSetPrefix;
@@ -49,6 +53,16 @@ void initOjProblemSetPrefix() {
     op["POJ"] = make_pair("http://poj.org/problem?id=", true);
     op["SPOJ"] = make_pair("https://www.spoj.com/problems/", false); // SPOJ 题目 id 为大写英文字母的组合
     op["MagicOJ"] = make_pair("http://www.magicoj.com/p/", true);
+}
+
+void initOjHomeUrl() {
+    auto& op = ojHomeUrl;
+    op["Luogu"] = make_pair("洛谷", "https://www.luogu.com.cn/");
+    op["HDU"] = make_pair("HDU", "https://acm.hdu.edu.cn/");
+    op["LibreOJ"] = make_pair("LOJ", "https://loj.ac/");
+    op["POJ"] = make_pair("POJ", "http://poj.org/");
+    op["SPOJ"] = make_pair("SPOJ", "https://www.spoj.com/");
+    op["MagicOJ"] = make_pair("MagicOJ", "http://www.magicoj.com/");
 }
 
 // PureNumber: 将 id 中的纯数字提取出来
@@ -372,12 +386,28 @@ void processDirectory(const string& path) {
     }
 }
 
+void outputOjUrl() {
+#ifndef OUT_Markdown
+    return;
+#else
+    bool first = true;
+    for (auto oj_pair: ojHomeUrl) {
+        if (first) first = false;
+        else cout << " \\| ";
+        auto& oj = oj_pair.second;
+        cout << "[" << oj.first << "](" << oj.second << ")";
+    }
+    cout << endl;
+#endif
+}
+
 int main() {
 #ifdef OUT_ProblemUrl
 initOjProblemSetPrefix();
 #endif
 #ifdef OUT_Markdown
     cout << markdown_pre << endl;
+    outputOjUrl();
     // 输出表头
     cout << "OJ | ID | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量 | 代码提交文件 | 数据点文件";
     cout << endl;
