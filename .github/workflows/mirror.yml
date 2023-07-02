@@ -53,7 +53,7 @@ jobs:
         if: ${{ failure() || steps.sync-second.outputs.result != 0}}
         run: |
           cd code-backup-gitee
-          git config --global pull.rebase false
-          git pull github development:development
+          git config --global --add pull.rebase false
+          git pull github development:development --commit
           git push gitee
           git push github
