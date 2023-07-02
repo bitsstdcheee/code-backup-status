@@ -62,7 +62,6 @@ jobs:
           echo "::add-mask::${{ secrets.REPO_KEY }}"
           cd code-backup-gitee
           git remote add gitee https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup
-          git remote add github https://bitsstdcheee:${{ secrets.REPO_KEY }}@github.com/bitsstdcheee/code-backup
           git config --global --add pull.rebase false
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
