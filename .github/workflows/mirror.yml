@@ -19,6 +19,7 @@ jobs:
       contents: write
     steps:
       - name: 克隆仓库 (github/bitsstdcheee/code-backup)
+        id: clone-first
         uses: actions/checkout@v3
         with:
           repository: bitsstdcheee/code-backup
@@ -27,11 +28,18 @@ jobs:
             # token: ${{ secrets.status-token }}
           token: ${{ secrets.REPO_KEY }}
       - name: 克隆仓库 (gitee/bitsstdcheee/code-backup)
+        id: clone-second
         run: |
           echo "::add-mask::${{ secrets.GITEE }}"
           echo "::add-mask::${{ secrets.REPO_KEY }}"
           git clone https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup code-backup-gitee
+      - name: 检查同步步骤状态
+        id: sync-check
+        if: ${{ steps.clone-first.conclusion == "success" && steps.clone-second.conclusion == "success" }}
+        run: |
+          echo "成功执行步骤"
       - name: 同步仓库 (Github -> Gitee)
+        if: ${{ steps.sync-check.conclusion == "success" }}
         id: sync-first
         run: |
           echo "::add-mask::${{ secrets.GITEE }}"
@@ -45,7 +53,7 @@ jobs:
           exit 0
       - name: 同步仓库 (Gitee -> Github)
         id: sync-second
-        if: ${{ failure() || steps.sync-first.outputs.result != 0 }}
+        if: ${{ steps.sync-check.conclusion == "success" && (failure() || steps.sync-first.outputs.result != 0) }}
         run: |
           echo "::add-mask::${{ secrets.GITEE }}"
           echo "::add-mask::${{ secrets.REPO_KEY }}"
@@ -56,7 +64,7 @@ jobs:
           echo "结果:$result"
           echo "result=$result" >> "$GITHUB_OUTPUT"
       - name: 尝试 Auto Merge (基底 Gitee)
-        if: ${{ failure() || steps.sync-second.outputs.result != 0}}
+        if: ${{ steps.sync-check.conclusion == "success" && (failure() || steps.sync-second.outputs.result != 0) }}
         run: |
           echo "::add-mask::${{ secrets.GITEE }}"
           echo "::add-mask::${{ secrets.REPO_KEY }}"
