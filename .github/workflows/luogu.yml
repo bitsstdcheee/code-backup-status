@@ -35,7 +35,7 @@ jobs:
             cp ./code/lucky.txt ./status/luogu/lucky.txt
             ls ./status/luogu
             cd ./status/luogu
-            python punch.py file
+            python punch.py file || echo "Test"
             result=$?
             if [[ "$result" == '2' ]];then
               echo "用户未登录"
