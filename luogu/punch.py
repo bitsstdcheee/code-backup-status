@@ -51,7 +51,7 @@ if __name__ == '__main__':
         in_cookie = sys.argv[1]
     punch(cookie=in_cookie)
     with open('json.txt', 'r', encoding='utf-8') as f:
-        res = f.readlines();
+        res = f.readline();
     if res.find(str_not_signed) != -1:
         print("用户尚未登录")
         exit(2)
