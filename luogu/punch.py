@@ -51,20 +51,19 @@ if __name__ == '__main__':
         in_cookie = sys.argv[1]
     punch(cookie=in_cookie)
     with open('json.txt', 'r', encoding='utf-8') as f:
-        res = json.load(f)
-    msg = res['message']
-    code = res['code']
-    if res == str_not_signed:
+        res = f.readlines();
+    if res.find(str_not_signed) != -1:
         print("用户尚未登录")
         exit(2)
-    if res == str_have_punched:
+    if res.find(str_have_punched) != -1:
         print("用户已打卡")
-        exit(0)
-    if code == 200:
+        exit(1)
+    if res.find('{"code":200') != -1:
         # 未打卡且打卡成功
         print("打卡请求正常返回")
         print("返回信息未处理")
         exit(0)
-        
+    else:
+        exit(3)
 
     # print(res)

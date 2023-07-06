@@ -29,12 +29,35 @@ jobs:
           run: |
             sudo pip3 install Beautifulsoup4 
         - name: 运行洛谷打卡
+          id: punch
           run: |
             cp ./code/Luogu/cookie.txt ./status/luogu/cookie.txt
             cp ./code/lucky.txt ./status/luogu/lucky.txt
             ls ./status/luogu
             cd ./status/luogu
             python punch.py file
+            result=$?
+            if [[ "$result" == '2' ]];then
+              echo "用户未登录"
+              echo "status=2" >> $GITHUB_OUTPUT
+              exit 2
+            elif [[ "$result" == '0' ]];then
+              echo "status=0" >> $GITHUB_OUTPUT
+              echo "打卡成功"
+              exit 0
+            elif [[ "$result" == '1' ]];then
+              echo "status=1" >> $GITHUB_OUTPUT
+              echo "用户已打卡"
+              exit 0
+            else
+              echo "未知错误"
+              exit 3
+            fi
+
+        - name: 空步骤 (验证是否已打卡)
+          if: failure()
+          run: |
+            exit 0
         - name: 上传构件
           uses: actions/upload-artifact@v3
           with:
