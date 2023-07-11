@@ -19,9 +19,9 @@ const string repo_url = "https://github.com/bitsstdcheee/code-backup";
 const string repo_branch = "development";
 const string repo_prefix = repo_url + "/blob/" + repo_branch + "/";
 
-const string markdown_pre = string("[![Luogu](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/luogu.yml)(https://github.com/bitsstdcheee/code-backup-status/actions/workflows/luogu.yml/badge.svg)]") + 
-string("[![Mirror](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/mirror.yml)(https://github.com/bitsstdcheee/code-backup-status/actions/workflows/mirror.yml/badge.svg)]") + 
-string("[![Runner](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/runner.yml)(https://github.com/bitsstdcheee/code-backup-status/actions/workflows/runner.yml/badge.svg)]");
+const string markdown_pre = string("[![Luogu](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/luogu.yml/badge.svg)](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/luogu.yml)") + 
+string("[![Mirror](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/mirror.yml/badge.svg)](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/mirror.yml)") + 
+string("[![Runner](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/runner.yml/badge.svg)](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/runner.yml)");
 
 string oj_exclude[oj_exclude_num] = {
     "Draft Code",
