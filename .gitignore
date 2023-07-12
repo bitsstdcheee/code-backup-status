@@ -36,6 +36,10 @@ output.txt
 output.md
 
 # Luogu input and output
-cookie.txt
-json.txt
-lucky.txt
+luogu/cookie.txt
+luogu/json.txt
+luogu/lucky.txt
+luogu/summary.txt
+
+# macOS Filesystem
+.DS_Store
