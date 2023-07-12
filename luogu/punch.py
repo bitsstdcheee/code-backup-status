@@ -111,7 +111,8 @@ if __name__ == '__main__':
         except Exception as e:
             print("遇到未知错误:", e)
             print(traceback.format_exc())
-            exit(3)
+            exit(4)
+        print("处理信息成功")
         exit(0)
         print(out)
     if res.find(str_not_signed) != -1:
