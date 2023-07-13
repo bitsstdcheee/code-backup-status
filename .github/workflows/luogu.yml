@@ -36,6 +36,7 @@ jobs:
             ls ./status/luogu
             cd ./status/luogu
             python time.py >> $GITHUB_STEP_SUMMARY
+            result=0
             python punch.py file || result=$?
             if [[ "$result" == '2' ]];then
               echo "用户未登录"
