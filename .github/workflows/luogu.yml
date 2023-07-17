@@ -84,7 +84,7 @@ jobs:
               author_id: bitsstdcheee
               coauthor_name: bitsstdcheee
               coauthor_email: jestingaero@163.com
-              repository: bitsstdcheeee/code-backup
+              repository: bitsstdcheee/code-backup
         - name: 上传构件
           uses: actions/upload-artifact@v3
           with:
