@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <utility>
 #include <vector>
 #include <map>
 #include <algorithm>
@@ -63,6 +64,7 @@ void initOjHomeUrl() {
     op["POJ"] = make_pair("POJ", "http://poj.org/");
     op["SPOJ"] = make_pair("SPOJ", "https://www.spoj.com/");
     op["MagicOJ"] = make_pair("MagicOJ", "http://www.magicoj.com/");
+    op["Codeforces"] = make_pair("CF", "https://codeforces.com/");
 }
 
 // PureNumber: 将 id 中的纯数字提取出来
