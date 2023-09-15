@@ -68,12 +68,13 @@ jobs:
               echo "**错误**: 未知错误" >> $GITHUB_STEP_SUMMARY
               exit 3
             fi
-        - name: 添加更改
+        - name: 添加更改 & 设置时区
           run: |
             cp -rf ./status/luogu/lucky.txt ./code/lucky.txt
             cd ./code/
             git status
             git add .
+            GIT_AUTHOR_DATE="$(TZ="Asia/Shanghai" git show --no-patch --date=format-local:"%Y-%m-%dT%H:%M:%S%z" --format="%ad")"
         - name: 提交更改
           uses: bitsstdcheee/action-push@v1.4.2
           with:

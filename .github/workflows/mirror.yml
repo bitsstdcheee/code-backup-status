@@ -75,6 +75,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git fetch github development:github-mirror
+          GIT_AUTHOR_DATE="$(TZ="Asia/Shanghai" git show --no-patch --date=format-local:"%Y-%m-%dT%H:%M:%S%z" --format="%ad")"
           git merge github-mirror --commit -m "Auto Merge from Github"
           git push github development:development
           git push gitee development:development
