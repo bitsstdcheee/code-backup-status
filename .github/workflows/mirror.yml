@@ -51,7 +51,7 @@ jobs:
         run: |
           echo "::add-mask::${{ secrets.GITEE }}"
           echo "::add-mask::${{ secrets.REPO_KEY }}"
-          git clone https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup code-backup-gitee
+          git clone https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup code-backup-gitee --progress
       - name: 同步仓库 (Gitee -> Github)
         id: sync-second
         if: ${{ steps.sync-check.conclusion == 'success' && steps.clone-second.conclusion == 'success' && (failure() || steps.sync-first.outputs.result != 0) }}
