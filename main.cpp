@@ -414,8 +414,7 @@ void processAtCoder(string path, string folderName = "Atcoder") {
     cout << endl;
     cout << "--- | -------- | ----------- | ------- | --------- | ---- |" << endl;
     
-    if (path[path.length() - 1] != '\\') path = path + "\\";
-    path = path + folderName;
+    path = (filesystem::path(path) / filesystem::path(folderName)).string();
     map<string, vector<string>> fileList;
     fileList.clear();
     for (const auto& entry : fs::recursive_directory_iterator(path)) {
@@ -484,7 +483,7 @@ void processAtCoder(string path, string folderName = "Atcoder") {
         cout << id << " | " << count << " | ";
         #endif
         #else
-        cout << "#" << oj.first << "," << id << "," << count << ",";
+        cout << "#" << folderName << "," << id << "," << count << ",";
         #endif
         if (status.empty()) {
             #ifdef OUT_Markdown
