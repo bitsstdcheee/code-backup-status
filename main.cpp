@@ -403,6 +403,172 @@ void outputOjUrl() {
 #endif
 }
 
+void processAtCoder(string path, string folderName = "Atcoder") {
+#ifndef OUT_Markdown
+    cout << "Warning: AtCoder 处理器不支持非 Markdown 环境下的输出" << endl;
+    return;
+#endif
+    // 单独处理 AtCoder 代码文件
+    cout << "### AtCoder" << endl;
+    cout << "编号 | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量 | 代码提交文件";
+    cout << endl;
+    cout << "--- | -------- | ----------- | ------- | --------- | ---- |" << endl;
+    
+    if (path[path.length() - 1] != '\\') path = path + "\\";
+    path = path + folderName;
+    map<string, vector<string>> fileList;
+    fileList.clear();
+    for (const auto& entry : fs::recursive_directory_iterator(path)) {
+        if (entry.is_regular_file()) {
+            const string& current_file_name = entry.path().filename().string();
+            if (!isCppFile(current_file_name)) continue;
+            FileName fn = parseFileName(current_file_name);
+            fileList[fn.id].push_back(current_file_name);
+        }
+    }
+    for (const auto& problem : fileList) {
+        string id = problem.first;
+        vector<pair<FileName, string>> cpp_files;
+        string status = "";
+        string current_oj = "AtCoder";
+        int max_pt = -1;
+        int count = 0;
+        vector<string> data_points;
+        vector<string> problem_second = problem.second;
+        sort(problem_second.begin(), problem_second.end());
+        for (const auto& filename : problem_second) {
+            if (isDataFile(filename)) {
+                size_t pos = filename.find_last_of('_');
+                if (pos != string::npos) {
+                    data_points.push_back(filename.substr(pos + 1));
+                }
+            }
+            else if (isCppFile(filename)) {
+                FileName fn = parseFileName(filename);
+                if (fn.id == id) {
+                    cpp_files.push_back(make_pair(fn, folderName + "/" + filename));
+                    if (fn.status.empty()) {
+
+                    }
+                    if (fn.status == "AC") {
+                        // cout << "!En1" << endl;
+                        status = "AC";
+                    }
+                    else if (status != "AC" && !fn.status.empty()) {
+                        status = fn.status;
+                    }
+                    if (fn.status == "AC") {
+                        max_pt = 100;
+                    }
+                    else {
+                        max_pt = max(max_pt, safe_stoi(fn.pt));
+                    }
+                    count++;
+                }
+            }
+        }
+        #ifdef OUT_Markdown
+        #ifdef OUT_ColorAC
+        cout << "$\\textcolor{" ;
+        if (status == "AC") cout << ColorAcceptedRGB;
+        else if (status == "Waiting") cout << ColorDefaultRGB;  // Waiting 状态时 color 留空以保持默认颜色
+        else cout << ColorUnacceptedRGB;
+        cout << "}{\\text{" << KatexFormat(id, 
+        #ifdef OUT_DoubleBackslash
+        true
+        #else
+        false
+        #endif
+            ) << "}}$ | " << count << " | ";
+        #else
+        cout << id << " | " << count << " | ";
+        #endif
+        #else
+        cout << "#" << oj.first << "," << id << "," << count << ",";
+        #endif
+        if (status.empty()) {
+            #ifdef OUT_Markdown
+            cout << "N/A | ";
+            #else
+            cout << "N/A,";
+            #endif
+        }
+        else {
+            if (status == "AC") {
+                #ifdef OUT_Markdown
+                cout << "AC | ";
+                #else
+                cout << "AC,";
+                #endif
+            }
+            else {
+                #ifdef OUT_Markdown
+                cout << status << " | ";
+                #else
+                cout << status << ",";
+                #endif
+            }
+        }
+        if (max_pt < 0) {
+            // max_pt 默认值为 -1
+            #ifdef OUT_Markdown
+            cout << "N/A | ";
+            #else
+            cout << "N/A,";
+            #endif
+        }
+        else {
+            #ifdef OUT_Markdown
+            cout << max_pt << " | ";
+            #else
+            cout << max_pt << ",";
+            #endif
+        }
+        #ifdef OUT_Markdown
+        cout << data_points.size() << " | ";
+        #else
+        cout << data_points.size() << endl;
+        cout << "  cpp files: ";
+        #endif
+        #ifdef OUT_Markdown
+        bool first_out = true; // 保证最后没有多余的逗号
+        #endif
+        for (const auto& cpp_file : cpp_files) {
+            #ifdef OUT_Markdown
+            if (first_out) cout << "[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
+            else cout << "<br>[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
+            first_out = false;
+            #else
+            cout << cpp_file.second << " ";
+            #endif
+        }
+        #ifdef OUT_Markdown
+        cout << " | ";
+        #else
+        cout << endl;
+        cout << "  data points: ";
+        #endif
+        #ifdef OUT_Markdown
+        first_out = true;
+        #endif
+        for (const auto& data_point : data_points) {
+            #ifdef OUT_Markdown
+            if (first_out) cout << "[" << data_point << "](" << repo_prefix << current_oj << "/" << id << "_" << data_point << ")";
+            else cout << "<br>[" << data_point << "](" << repo_prefix << current_oj << "/" << id << "_" << data_point << ")";
+            first_out = false;
+            #else
+            cout << data_point << " ";
+            #endif
+        }
+        #ifdef OUT_Markdown
+        #ifdef OUT_Checkbox
+        cout << " | " << (status == "AC" ? "<ul><li>[x] 完成</li></ul>" : "<ul><li>[ ] 未完成</li></ul>");
+        #endif
+        #endif
+        cout << endl;
+    }
+}
+
 int main() {
 #ifdef OUT_ProblemUrl
 initOjProblemSetPrefix();
@@ -419,9 +585,16 @@ initOjHomeUrl();
     cout << endl;
 #endif
 #ifndef CI
-    processDirectory("D:\\code-backup\\");
+    // processDirectory("D:\\code-backup\\");
+    processDirectory("F:\\code-backup\\");
 #else
     processDirectory("code-backup");
+#endif
+    cout << endl;
+#ifndef CI
+    processAtCoder("F:\\code-backup\\");
+#else
+    processAtCoder("code-backup");
 #endif
     return 0;
 }
