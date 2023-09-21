@@ -229,6 +229,15 @@ string getAtCoderLuoguFormatted(const string& id) {
     return luogu_id;
 }
 
+string parseCodeForcesUrl(const string& id) {
+    char question_id = id[id.size() - 1];
+    string contest_id = (id[0] == 'P' ? 
+        id.substr(1, id.size() - 2) :
+        id.substr(0, id.size() - 1));
+    return "https://codeforces.com/problemset/problem/" + contest_id 
+        + "/" + question_id; 
+}
+
 // 统计每个OJ中每道题目是否通过，历史分数，提交次数，代码文件（以文件链接输出），这道题的数据点（如有则输出）
 void processDirectory(const string& path) {
     map<string, map<string, vector<string>>> oj_map;
@@ -312,6 +321,9 @@ void processDirectory(const string& path) {
             #ifdef OUT_ProblemUrl
             if (ProblemUrlCheck(current_oj)) {
                 cout << "[" << current_oj << "](" << ProblemUrl(current_oj, id) << ") | " ;
+            } else if (current_oj == "Codeforces") {
+                // CF 特殊处理
+                cout << "[" << current_oj << "](" << parseCodeForcesUrl(id) << ") | ";
             } else {
                 // 当前 oj 不支持 url, 回退到原来格式
                 cout << current_oj << " | " ;
