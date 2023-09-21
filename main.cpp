@@ -443,9 +443,9 @@ void processAtCoder(string path, string folderName = "Atcoder") {
 #endif
     // 单独处理 AtCoder 代码文件
     cout << "### AtCoder" << endl;
-    cout << "洛谷 | 原题 | 编号 | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量 | 代码提交文件";
+    cout << "洛谷 | 原题 | 编号 | 提交次数 | 最终提交状态 | 最高分数 | 代码提交文件";
     cout << endl;
-    cout << "---- | --- | --- | -------- | ----------- | ------- | --------- | ---- |" << endl;
+    cout << "---- | --- | --- | -------- | ----------- | ------- | ---- |" << endl;
     
     path = (filesystem::path(path) / filesystem::path(folderName)).string();
     map<string, vector<string>> fileList;
@@ -560,12 +560,6 @@ void processAtCoder(string path, string folderName = "Atcoder") {
             #endif
         }
         #ifdef OUT_Markdown
-        cout << data_points.size() << " | ";
-        #else
-        cout << data_points.size() << endl;
-        cout << "  cpp files: ";
-        #endif
-        #ifdef OUT_Markdown
         bool first_out = true; // 保证最后没有多余的逗号
         #endif
         for (const auto& cpp_file : cpp_files) {
@@ -575,24 +569,6 @@ void processAtCoder(string path, string folderName = "Atcoder") {
             first_out = false;
             #else
             cout << cpp_file.second << " ";
-            #endif
-        }
-        #ifdef OUT_Markdown
-        cout << " | ";
-        #else
-        cout << endl;
-        cout << "  data points: ";
-        #endif
-        #ifdef OUT_Markdown
-        first_out = true;
-        #endif
-        for (const auto& data_point : data_points) {
-            #ifdef OUT_Markdown
-            if (first_out) cout << "[" << data_point << "](" << repo_prefix << current_oj << "/" << id << "_" << data_point << ")";
-            else cout << "<br>[" << data_point << "](" << repo_prefix << current_oj << "/" << id << "_" << data_point << ")";
-            first_out = false;
-            #else
-            cout << data_point << " ";
             #endif
         }
         #ifdef OUT_Markdown
