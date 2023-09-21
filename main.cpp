@@ -196,6 +196,39 @@ string KatexFormat(const string& str, bool double_mode = false) {
     return res;
 }
 
+// AtCoder 转洛谷 ID 时部分需要特殊处理的比赛 ID
+// 若使用 crawl 获取, 则基本不需要特殊处理
+const pair<string, string> AtCoderContestIdRewrite[] = {
+    {"icpc2015summerday2", "icpc2015summer_day2"}
+};
+
+// 获取洛谷下 AtCoder 题号名称
+// eg. abc303d -> AT_abc303_d
+string getAtCoderLuoguFormatted(const string& id) {
+    // ID 最后一位为题面编号 (字母), 其余为比赛编号
+    // 转为小写
+    string id_lower = "";
+    for (char c : id) {
+        if (c >= 'A' && c <= 'Z')
+            id_lower += c - 'A' + 'a';
+        else if (c == '-')
+            id_lower += '_';
+        else
+            id_lower += c;
+    }
+    char question_id = id_lower[id_lower.size() - 1];
+    string contest_id = id_lower.substr(0, id_lower.size() - 1);
+    // 匹配重写规则
+    for (pair<string, string> rule : AtCoderContestIdRewrite) {
+        if (contest_id == rule.first) {
+            contest_id = rule.second;
+            break;
+        }
+    }
+    string luogu_id = contest_id + "_" + question_id;
+    return luogu_id;
+}
+
 // 统计每个OJ中每道题目是否通过，历史分数，提交次数，代码文件（以文件链接输出），这道题的数据点（如有则输出）
 void processDirectory(const string& path) {
     map<string, map<string, vector<string>>> oj_map;
@@ -410,9 +443,9 @@ void processAtCoder(string path, string folderName = "Atcoder") {
 #endif
     // 单独处理 AtCoder 代码文件
     cout << "### AtCoder" << endl;
-    cout << "编号 | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量 | 代码提交文件";
+    cout << "洛谷 | 原题 | 编号 | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量 | 代码提交文件";
     cout << endl;
-    cout << "--- | -------- | ----------- | ------- | --------- | ---- |" << endl;
+    cout << "---- | --- | --- | -------- | ----------- | ------- | --------- | ---- |" << endl;
     
     path = (filesystem::path(path) / filesystem::path(folderName)).string();
     map<string, vector<string>> fileList;
@@ -467,6 +500,9 @@ void processAtCoder(string path, string folderName = "Atcoder") {
             }
         }
         #ifdef OUT_Markdown
+        const string atCoderLuoguFormattedId = getAtCoderLuoguFormatted(id);
+        cout << "[洛谷](https://www.luogu.com.cn/problem/AT_" + atCoderLuoguFormattedId + ") | ";
+        cout << "[Link](https://www.luogu.com.cn/remoteJudgeRedirect/atcoder/" + atCoderLuoguFormattedId + ") | ";
         #ifdef OUT_ColorAC
         cout << "$\\textcolor{" ;
         if (status == "AC") cout << ColorAcceptedRGB;
