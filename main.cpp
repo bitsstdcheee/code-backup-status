@@ -248,6 +248,59 @@ string parseCodeForcesUrl(const string& id) {
         + "/" + question_id; 
 }
 
+const string BadgeSchema = "https";
+const string BadgeHost = "img.shields.io";
+const string BadgeRoute = "/badge/";
+
+string getUrlEncode(string s) {
+    string res = "";
+    for (char c : s) {
+        if (c == ':') res += "%3A";
+        else if (c == '/') res += "%2F";
+        else if (c == '?') res += "%3F";
+        else if (c == '#') res += "%23";
+        else if (c == '[') res += "%5B";
+        else if (c == ']') res += "%5D";
+        else if (c == '@') res += "%40";
+        else if (c == '!') res += "%21";
+        else if (c == '$') res += "%24";
+        else if (c == '&') res += "%26";
+        else if (c == '\'') res += "%27";
+        else if (c == '(') res += "%28";
+        else if (c == ')') res += "%29";
+        else if (c == '*') res += "%2A";
+        else if (c == '+') res += "%2B";
+        else if (c == ',') res += "%2C";
+        else if (c == ';') res += "%3B";
+        else if (c == '=') res += "%3D";
+        else if (c == '%') res += "%25";
+        else if (c == ' ') res += "%20";
+        else {
+            res += c;
+        }
+    }
+    return res;
+}
+
+string getBadgeUrl(string left, string right = "", string color = "") {
+    string url = BadgeSchema + "://" + BadgeHost + BadgeRoute;
+    left = getUrlEncode(left);
+    right = getUrlEncode(right);
+    url += left;
+    if (right != "") url += "-" + right;
+    if (color != "") url += "-" + color;
+    return url;
+}
+
+string getFileExtensionWithoutDot(const string& filename) {
+    size_t dotPos = filename.find_last_of('.');
+    if (dotPos != std::string::npos && dotPos < filename.size() - 1) {
+        return filename.substr(dotPos + 1);
+    }
+    // 如果没有找到点，表示没有扩展名
+    return "";
+}
+
 // 统计每个OJ中每道题目是否通过，历史分数，提交次数，代码文件（以文件链接输出），这道题的数据点（如有则输出）
 void processDirectory(const string& path) {
     map<string, map<string, vector<string>>> oj_map;
@@ -408,8 +461,13 @@ void processDirectory(const string& path) {
             #endif
             for (const auto& cpp_file : cpp_files) {
                 #ifdef OUT_Markdown
+                #ifdef OUT_Badge
+                if (first_out) cout << "[![](" + getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? " (Rust)" : ""), cpp_file.first.status == "AC" ? "52C41A" : "E74C3C") + ")](" << repo_prefix << cpp_file.second << ")";
+                else cout << "<br>[![](" + getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? " (Rust)" : ""), cpp_file.first.status == "AC" ? "52C41A" : "E74C3C") + ")](" << repo_prefix << cpp_file.second << ")";
+                #else
                 if (first_out) cout << "[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
                 else cout << "<br>[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
+                #endif
                 first_out = false;
                 #else
                 cout << cpp_file.second << " ";
@@ -586,8 +644,13 @@ void processAtCoder(string path, string folderName = "Atcoder") {
         #endif
         for (const auto& cpp_file : cpp_files) {
             #ifdef OUT_Markdown
+            #ifdef OUT_Badge
+            if (first_out) cout << "[![](" + getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? " (Rust)" : ""), cpp_file.first.status == "AC" ? "52C41A" : "E74C3C") + ")](" << repo_prefix << cpp_file.second << ")";
+            else cout << "<br>[![](" + getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? " (Rust)" : ""), cpp_file.first.status == "AC" ? "52C41A" : "E74C3C") + ")](" << repo_prefix << cpp_file.second << ")";
+            #else
             if (first_out) cout << "[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
             else cout << "<br>[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
+            #endif
             first_out = false;
             #else
             cout << cpp_file.second << " ";
