@@ -108,6 +108,17 @@ int safe_stoi(const string& str) {
         return 0;
     }
 }
+
+// 获取不含点的文件拓展名
+string getFileExtensionWithoutDot(const string& filename) {
+    size_t dotPos = filename.find_last_of('.');
+    if (dotPos != std::string::npos && dotPos < filename.size() - 1) {
+        return filename.substr(dotPos + 1);
+    }
+    // 如果没有找到点，表示没有扩展名
+    return "";
+}
+
 // 输出时输出关键内容
 string getFileDescription(const FileName& fn, bool enable_AC = false) {
     string res = fn.date + " " + fn.status;
@@ -292,15 +303,6 @@ string getBadgeUrl(string left, string right = "", string color = "") {
     return url;
 }
 
-string getFileExtensionWithoutDot(const string& filename) {
-    size_t dotPos = filename.find_last_of('.');
-    if (dotPos != std::string::npos && dotPos < filename.size() - 1) {
-        return filename.substr(dotPos + 1);
-    }
-    // 如果没有找到点，表示没有扩展名
-    return "";
-}
-
 // 统计每个OJ中每道题目是否通过，历史分数，提交次数，代码文件（以文件链接输出），这道题的数据点（如有则输出）
 void processDirectory(const string& path) {
     map<string, map<string, vector<string>>> oj_map;
@@ -465,8 +467,8 @@ void processDirectory(const string& path) {
                 if (first_out) cout << "[![](" + getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? " (Rust)" : ""), cpp_file.first.status == "AC" ? "52C41A" : "E74C3C") + ")](" << repo_prefix << cpp_file.second << ")";
                 else cout << "<br>[![](" + getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? " (Rust)" : ""), cpp_file.first.status == "AC" ? "52C41A" : "E74C3C") + ")](" << repo_prefix << cpp_file.second << ")";
                 #else
-                if (first_out) cout << "[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
-                else cout << "<br>[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
+                if (first_out) cout << "[" << getFileDescription(cpp_file.first, true) << (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? "(**Rust**)" : "") << "](" << repo_prefix << cpp_file.second << ")";
+                else cout << "<br>[" << getFileDescription(cpp_file.first, true) << (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? "(**Rust**)" : "") << "](" << repo_prefix << cpp_file.second << ")";
                 #endif
                 first_out = false;
                 #else
@@ -648,8 +650,8 @@ void processAtCoder(string path, string folderName = "Atcoder") {
             if (first_out) cout << "[![](" + getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? " (Rust)" : ""), cpp_file.first.status == "AC" ? "52C41A" : "E74C3C") + ")](" << repo_prefix << cpp_file.second << ")";
             else cout << "<br>[![](" + getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? " (Rust)" : ""), cpp_file.first.status == "AC" ? "52C41A" : "E74C3C") + ")](" << repo_prefix << cpp_file.second << ")";
             #else
-            if (first_out) cout << "[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
-            else cout << "<br>[" << getFileDescription(cpp_file.first, true) << "](" << repo_prefix << cpp_file.second << ")";
+            if (first_out) cout << "[" << getFileDescription(cpp_file.first, true) << (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? " (**Rust**)" : "") <<"](" << repo_prefix << cpp_file.second << ")";
+            else cout << "<br>[" << getFileDescription(cpp_file.first, true) << (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? "(**Rust**)" : "") << "](" << repo_prefix << cpp_file.second << ")";
             #endif
             first_out = false;
             #else
