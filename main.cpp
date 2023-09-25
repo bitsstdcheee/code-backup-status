@@ -128,7 +128,7 @@ string getFileDescription(const FileName& fn, bool enable_AC = false) {
 // 解析文件名，提取关键词
 FileName parseFileName(const string& filename) {
     FileName fn;
-    std::string pattern = R"(^(.*?)_ver\.(.*?)_(.*?)(?:_((?:[^\d_]+(?:_[^\d_]+)*)))?_?((\d+)pt)?((?:_(\d+))*)?(\.cpp|\.in|\.out|\.ans)$)";
+    std::string pattern = R"(^(.*?)_ver\.(.*?)_(.*?)(?:_((?:[^\d_]+(?:_[^\d_]+)*)))?_?((\d+)pt)?((?:_(\d+))*)?(\.cpp|\.rs|\.in|\.out|\.ans)$)";
     std::regex regex(pattern);
     std::smatch match;
     if (std::regex_match(filename, match, regex)) {
@@ -157,9 +157,19 @@ bool isDataFile(const string& filename) {
         filename.substr(filename.size() - 4) == ".out" || filename.substr(filename.size() - 4) == ".ans");
 }
 
-// 判断文件是否是源代码文件
+// 判断文件是否是 C++ 源代码文件
 bool isCppFile(const string& filename) {
     return filename.size() > 4 && filename.substr(filename.size() - 4) == ".cpp";
+}
+
+// 判断文件是否是 Rust 源代码文件
+bool isRustFile(const string& filename) {
+    return filename.size() > 3 && filename.substr(filename.size() - 3) == ".rs";
+}
+
+// 判断文件是否是源代码文件
+bool isCodeFile(const string& filename) {
+    return isCppFile(filename) || isRustFile(filename);
 }
 
 // 获取文件的OJ名称
@@ -259,7 +269,7 @@ void processDirectory(const string& path) {
                     if (!flag) oj_map[ojName][id].push_back(filename);
                 }
             }
-            else if (isCppFile(filename)) {
+            else if (isCodeFile(filename)) {
                 FileName fn = parseFileName(filename);
                 if (!fn.id.empty()) {
                     string ojName = getOJName(entry.path().parent_path().string());
@@ -293,7 +303,7 @@ void processDirectory(const string& path) {
                         data_points.push_back(filename.substr(pos + 1));
                     }
                 }
-                else if (isCppFile(filename)) {
+                else if (isCodeFile(filename)) {
                     FileName fn = parseFileName(filename);
                     if (fn.id == id) {
                         cpp_files.push_back(make_pair(fn, oj.first + "/" + filename));
@@ -465,7 +475,7 @@ void processAtCoder(string path, string folderName = "Atcoder") {
     for (const auto& entry : fs::recursive_directory_iterator(path)) {
         if (entry.is_regular_file()) {
             const string& current_file_name = entry.path().filename().string();
-            if (!isCppFile(current_file_name)) continue;
+            if (!isCodeFile(current_file_name)) continue;
             FileName fn = parseFileName(current_file_name);
             fileList[fn.id].push_back(current_file_name);
         }
@@ -487,7 +497,7 @@ void processAtCoder(string path, string folderName = "Atcoder") {
                     data_points.push_back(filename.substr(pos + 1));
                 }
             }
-            else if (isCppFile(filename)) {
+            else if (isCodeFile(filename)) {
                 FileName fn = parseFileName(filename);
                 if (fn.id == id) {
                     cpp_files.push_back(make_pair(fn, folderName + "/" + filename));
