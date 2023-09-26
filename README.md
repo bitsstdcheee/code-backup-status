@@ -18,6 +18,9 @@
 <td>BZOJ</td><td>P1833</td><td>3</td><td>AC</td><td>100</td><td>4</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/BZOJ/P1833_ver.20221121_AC.cpp"><img src="https://img.shields.io/badge/20221121-AC-52C41A" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/BZOJ/P1833_ver.20221121_TLE_WA_30pt.cpp"><img src="https://img.shields.io/badge/20221121-TLE_WA-E74C3C" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/BZOJ/P1833_ver.20221121_WA_90pt.cpp"><img src="https://img.shields.io/badge/20221121-WA-E74C3C" /></a></td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/BZOJ/P1833_1.in">1.in</a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/BZOJ/P1833_1.out">1.out</a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/BZOJ/P1833_10.in">10.in</a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/BZOJ/P1833_10.out">10.out</a></td>
 </tr>
 <tr>
+<td><a href="https://codeforces.com/problemset/problem/1815/A">Codeforces</a></td><td>P1815A</td><td>2</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1815A_ver.20230922_AC.cpp"><img src="https://img.shields.io/badge/20230922-AC-52C41A" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1815A_ver.20230922_WA.cpp"><img src="https://img.shields.io/badge/20230922-WA-E74C3C" /></a></td><td></td>
+</tr>
+<tr>
 <td><a href="https://codeforces.com/problemset/problem/1848/A">Codeforces</a></td><td>P1848A</td><td>1</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1848A_ver.20230826_AC.cpp"><img src="https://img.shields.io/badge/20230826-AC-52C41A" /></a></td><td></td>
 </tr>
 <tr>
@@ -27,7 +30,25 @@
 <td><a href="https://codeforces.com/problemset/problem/1848/C">Codeforces</a></td><td>P1848C</td><td>4</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1848C_ver.20230826_AC.cpp"><img src="https://img.shields.io/badge/20230826-AC-52C41A" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1848C_ver.20230826_RE.cpp"><img src="https://img.shields.io/badge/20230826-RE-E74C3C" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1848C_ver.20230826_TLE.cpp"><img src="https://img.shields.io/badge/20230826-TLE-E74C3C" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1848C_ver.20230826_WA.cpp"><img src="https://img.shields.io/badge/20230826-WA-E74C3C" /></a></td><td></td>
 </tr>
 <tr>
+<td><a href="https://codeforces.com/problemset/problem/1862/B">Codeforces</a></td><td>P1862B</td><td>1</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1862B_ver.20230921_AC.cpp"><img src="https://img.shields.io/badge/20230921-AC-52C41A" /></a></td><td></td>
+</tr>
+<tr>
+<td><a href="https://codeforces.com/problemset/problem/1862/D">Codeforces</a></td><td>P1862D</td><td>1</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1862D_ver.20230921_AC.cpp"><img src="https://img.shields.io/badge/20230921-AC-52C41A" /></a></td><td></td>
+</tr>
+<tr>
+<td><a href="https://codeforces.com/problemset/problem/1862/E">Codeforces</a></td><td>P1862E</td><td>1</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1862E_ver.20230921_AC.cpp"><img src="https://img.shields.io/badge/20230921-AC-52C41A" /></a></td><td></td>
+</tr>
+<tr>
 <td><a href="https://codeforces.com/problemset/problem/1872/A">Codeforces</a></td><td>P1872A</td><td>1</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1872A_ver.20230908_AC.cpp"><img src="https://img.shields.io/badge/20230908-AC-52C41A" /></a></td><td></td>
+</tr>
+<tr>
+<td><a href="https://codeforces.com/problemset/problem/1879/A">Codeforces</a></td><td>P1879A</td><td>2</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1879A_ver.20230925_AC.cpp"><img src="https://img.shields.io/badge/20230925-AC-52C41A" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1879A_ver.20230925_WA.cpp"><img src="https://img.shields.io/badge/20230925-WA-E74C3C" /></a></td><td></td>
+</tr>
+<tr>
+<td><a href="https://codeforces.com/problemset/problem/544/B">Codeforces</a></td><td>P544B <img src="https://img.shields.io/badge/Rust-DEA584"></td><td>4</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P544B_ver.20230926_AC.cpp"><img src="https://img.shields.io/badge/20230926-AC-52C41A" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P544B_ver.20230926_AC.rs"><img src="https://img.shields.io/badge/20230926-AC%20%28Rust%29-DEA584" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P544B_ver.20230926_WA.cpp"><img src="https://img.shields.io/badge/20230926-WA-E74C3C" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P544B_ver.20230926_WA_1.cpp"><img src="https://img.shields.io/badge/20230926-WA-E74C3C" /></a></td><td></td>
+</tr>
+<tr>
+<td><a href="https://codeforces.com/problemset/problem/544/C">Codeforces</a></td><td>P544C <img src="https://img.shields.io/badge/Rust-DEA584"></td><td>4</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P544C_ver.20230926_AC.cpp"><img src="https://img.shields.io/badge/20230926-AC-52C41A" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P544C_ver.20230926_AC.rs"><img src="https://img.shields.io/badge/20230926-AC%20%28Rust%29-DEA584" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P544C_ver.20230926_WA.cpp"><img src="https://img.shields.io/badge/20230926-WA-E74C3C" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P544C_ver.20230926_WA_1.cpp"><img src="https://img.shields.io/badge/20230926-WA-E74C3C" /></a></td><td></td>
 </tr>
 <tr>
 <td><a href="https://codeforces.com/problemset/problem/940/F">Codeforces</a></td><td>P940F</td><td>2</td><td>WA</td><td>0</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P940F_ver.20230919_RE.cpp"><img src="https://img.shields.io/badge/20230919-RE-E74C3C" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P940F_ver.20230919_WA.cpp"><img src="https://img.shields.io/badge/20230919-WA-E74C3C" /></a></td><td></td>
