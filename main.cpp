@@ -13,6 +13,7 @@ namespace fs = std::filesystem;
 
 #ifdef OUT_Badge
 #define OUT_HTML_Markdown
+#undef OUT_ColorAC
 #endif
 
 const string ColorAcceptedRGB = "#52C41A";
