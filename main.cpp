@@ -11,6 +11,10 @@
 using namespace std;
 namespace fs = std::filesystem;
 
+#ifdef OUT_Badge
+#define OUT_HTML_Markdown
+#endif
+
 const string ColorAcceptedRGB = "#52C41A";
 const string ColorUnacceptedRGB = "#E74C3C";
 const string ColorDefaultRGB = "#FFFFFF";
@@ -348,8 +352,14 @@ void processDirectory(const string& path) {
             }
         }
     }
+    #ifdef OUT_HTML_Markdown
+    cout << "<tbody>\n";
+    #endif
     for (const auto& oj : oj_map) {
         for (const auto& problem : oj.second) {
+            #ifdef OUT_HTML_Markdown
+            cout << "<tr>\n";
+            #endif
             string id = problem.first;
             vector<pair<FileName, string>> cpp_files;
             string status = "";
@@ -397,16 +407,31 @@ void processDirectory(const string& path) {
             #ifdef OUT_Markdown
             #ifdef OUT_ProblemUrl
             if (ProblemUrlCheck(current_oj)) {
+                #ifdef OUT_HTML_Markdown
+                cout << "<td><a href=\"" + ProblemUrl(current_oj, id) + "\">" << current_oj << "</a></td>";
+                #else
                 cout << "[" << current_oj << "](" << ProblemUrl(current_oj, id) << ") | " ;
+                #endif
             } else if (current_oj == "Codeforces") {
                 // CF 特殊处理
+                #ifdef OUT_HTML_Markdown
+                cout << "<td><a href=\"" + parseCodeForcesUrl(id) + "\">" << current_oj << "</a></td>";
+                #else
                 cout << "[" << current_oj << "](" << parseCodeForcesUrl(id) << ") | ";
+                #endif
             } else {
                 // 当前 oj 不支持 url, 回退到原来格式
+                #ifdef OUT_HTML_Markdown
+                cout << "<td>" << current_oj << "</td>";
+                #else
                 cout << current_oj << " | " ;
+                #endif
             }
             #else
             cout << current_oj << " | " ;
+            #endif
+            #ifdef OUT_HTML_Markdown
+            cout << "<td>";
             #endif
             #ifdef OUT_ColorAC
             cout << "$\\textcolor{" ;
@@ -422,16 +447,36 @@ void processDirectory(const string& path) {
             #else
             false
             #endif
-                ) << "}}$ | " << count << " | ";
+            );
+            #ifdef OUT_HTML_Markdown
+            cout << "}}$</td><td>" << count << "</td>";
+            #else
+            #ifdef OUT_HTML_Markdown
+            cout << "}}$</td><td>" << count << "</td>";
+            #else
+            cout << "}}$ | " << count << " | ";
+            #endif
+            #endif
+            #else
+            #ifdef OUT_HTML_Markdown
+            cout << id << "</td><td>" << count << "</td>";
             #else
             cout << id << " | " << count << " | ";
+            #endif
             #endif
             #else
             cout << "#" << oj.first << "," << id << "," << count << ",";
             #endif
+            #ifdef OUT_HTML_Markdown
+            cout << "<td>";
+            #endif
             if (status.empty()) {
                 #ifdef OUT_Markdown
+                #ifdef OUT_HTML_Markdown
+                cout << "N/A</td>";
+                #else
                 cout << "N/A | ";
+                #endif
                 #else
                 cout << "N/A,";
                 #endif
@@ -439,42 +484,68 @@ void processDirectory(const string& path) {
             else {
                 if (status == "AC") {
                     #ifdef OUT_Markdown
+                    #ifdef OUT_HTML_Markdown
+                    cout << "AC</td>";
+                    #else
                     cout << "AC | ";
+                    #endif
                     #else
                     cout << "AC,";
                     #endif
                 }
                 else {
                     #ifdef OUT_Markdown
+                    #ifdef OUT_HTML_Markdown
+                    cout << status << "</td>";
+                    #else
                     cout << status << " | ";
+                    #endif
                     #else
                     cout << status << ",";
                     #endif
                 }
             }
+            #ifdef OUT_HTML_Markdown
+            cout << "<td>";
+            #endif
             if (max_pt < 0) {
                 // max_pt 默认值为 -1
                 #ifdef OUT_Markdown
+                #ifdef OUT_HTML_Markdown
+                cout << "N/A</td>";
+                #else
                 cout << "N/A | ";
+                #endif
                 #else
                 cout << "N/A,";
                 #endif
             }
             else {
                 #ifdef OUT_Markdown
+                #ifdef OUT_HTML_Markdown
+                cout << max_pt << "</td>";
+                #else
                 cout << max_pt << " | ";
+                #endif
                 #else
                 cout << max_pt << ",";
                 #endif
             }
             #ifdef OUT_Markdown
+            #ifdef OUT_HTML_Markdown
+            cout << "<td>" << data_points.size() << "</td>";
+            #else
             cout << data_points.size() << " | ";
+            #endif
             #else
             cout << data_points.size() << endl;
             cout << "  cpp files: ";
             #endif
             #ifdef OUT_Markdown
             bool first_out = true; // 保证最后没有多余的逗号
+            #endif
+            #ifdef OUT_HTML_Markdown
+            cout << "<td>";
             #endif
             for (const auto& cpp_file : cpp_files) {
                 #ifdef OUT_Markdown
@@ -493,7 +564,11 @@ void processDirectory(const string& path) {
                 #endif
             }
             #ifdef OUT_Markdown
+            #ifdef OUT_HTML_Markdown
+            cout << "</td>";
+            #else
             cout << " | ";
+            #endif
             #else
             cout << endl;
             cout << "  data points: ";
@@ -501,23 +576,42 @@ void processDirectory(const string& path) {
             #ifdef OUT_Markdown
             first_out = true;
             #endif
+            #ifdef OUT_HTML_Markdown
+            cout << "<td>";
+            #endif
             for (const auto& data_point : data_points) {
                 #ifdef OUT_Markdown
+                #ifdef OUT_HTML_Markdown
+                if (first_out)
+                cout << "<a href=\"" << repo_prefix << current_oj << "/" << id << "_" << data_point << "\">" << data_point << "</a>";
+                else cout << "<br><a href=\"" << repo_prefix << current_oj << "/" << id << "_" << data_point << "\">" << data_point << "</a>";
+                first_out = false;
+                #else
                 if (first_out) cout << "[" << data_point << "](" << repo_prefix << current_oj << "/" << id << "_" << data_point << ")";
                 else cout << "<br>[" << data_point << "](" << repo_prefix << current_oj << "/" << id << "_" << data_point << ")";
                 first_out = false;
+                #endif
                 #else
                 cout << data_point << " ";
                 #endif
             }
+            #ifdef OUT_HTML_Markdown
+            cout << "</td>";
+            #endif
             #ifdef OUT_Markdown
             #ifdef OUT_Checkbox
             cout << " | " << (status == "AC" ? "<ul><li>[x] 完成</li></ul>" : "<ul><li>[ ] 未完成</li></ul>");
             #endif
             #endif
             cout << endl;
+            #ifdef OUT_HTML_Markdown
+            cout << "</tr>\n";
+            #endif
         }
     }
+    #ifdef OUT_HTML_Markdown
+    cout << "</tbody>\n";
+    #endif
 }
 
 void outputOjUrl() {
@@ -541,10 +635,16 @@ void processAtCoder(string path, string folderName = "Atcoder") {
     return;
 #endif
     // 单独处理 AtCoder 代码文件
+    #ifdef OUT_HTML_Markdown
+    cout << "### AtCoder" << endl << endl;
+    cout << "<table>\n";
+    cout << "<thead>\n<tr>\n<th>洛谷</th>\n<th>原题</th>\n<th>编号</th>\n<th>提交次数</th>\n<th>最终提交状态</th>\n<th>最高分数</th>\n<th>代码提交文件</th>\n</tr></thead>\n";
+    #else
     cout << "### AtCoder" << endl;
     cout << "洛谷 | 原题 | 编号 | 提交次数 | 最终提交状态 | 最高分数 | 代码提交文件";
     cout << endl;
     cout << "---- | --- | --- | -------- | ----------- | ------- | ---- |" << endl;
+    #endif
     
     path = (filesystem::path(path) / filesystem::path(folderName)).string();
     map<string, vector<string>> fileList;
@@ -557,7 +657,14 @@ void processAtCoder(string path, string folderName = "Atcoder") {
             fileList[fn.id].push_back(current_file_name);
         }
     }
+    #ifdef OUT_HTML_Markdown
+    cout << "<tbody>\n";
+    #endif
+    
     for (const auto& problem : fileList) {
+        #ifdef OUT_HTML_Markdown
+        cout << "<tr>\n";
+        #endif
         string id = problem.first;
         vector<pair<FileName, string>> cpp_files;
         string status = "";
@@ -600,8 +707,16 @@ void processAtCoder(string path, string folderName = "Atcoder") {
         }
         #ifdef OUT_Markdown
         const string atCoderLuoguFormattedId = getAtCoderLuoguFormatted(id);
+        #ifdef OUT_HTML_Markdown
+        cout << "<td><a href=\"" << "https://www.luogu.com.cn/problem/AT_" + atCoderLuoguFormattedId << "\">洛谷</a></td>"; 
+        cout << "<td><a href=\"" << "https://www.luogu.com.cn/remoteJudgeRedirect/atcoder/" + atCoderLuoguFormattedId << "\">Link</a></td>";
+        #else
         cout << "[洛谷](https://www.luogu.com.cn/problem/AT_" + atCoderLuoguFormattedId + ") | ";
         cout << "[Link](https://www.luogu.com.cn/remoteJudgeRedirect/atcoder/" + atCoderLuoguFormattedId + ") | ";
+        #endif
+        #ifdef OUT_HTML_Markdown
+        cout << "<td>";
+        #endif
         #ifdef OUT_ColorAC
         cout << "$\\textcolor{" ;
         if (status == "AC") cout << ColorAcceptedRGB;
@@ -613,16 +728,32 @@ void processAtCoder(string path, string folderName = "Atcoder") {
         #else
         false
         #endif
-            ) << "}}$ | " << count << " | ";
+        );
+        #ifdef OUT_HTML_Markdown
+        cout << "}}$</td><td>" << count << "</td>";
+        #else
+        cout << "}}$ | " << count << " | ";
+        #endif
+        #else
+        #ifdef OUT_HTML_Markdown
+        cout << id << "</td><td>" << count << "</td>";
         #else
         cout << id << " | " << count << " | ";
+        #endif
         #endif
         #else
         cout << "#" << folderName << "," << id << "," << count << ",";
         #endif
+        #ifdef OUT_HTML_Markdown
+        cout << "<td>";
+        #endif
         if (status.empty()) {
             #ifdef OUT_Markdown
+            #ifdef OUT_HTML_Markdown
+            cout << "N/A</td>";
+            #else
             cout << "N/A | ";
+            #endif
             #else
             cout << "N/A,";
             #endif
@@ -630,36 +761,58 @@ void processAtCoder(string path, string folderName = "Atcoder") {
         else {
             if (status == "AC") {
                 #ifdef OUT_Markdown
+                #ifdef OUT_HTML_Markdown
+                cout << "AC</td>";
+                #else
                 cout << "AC | ";
+                #endif
                 #else
                 cout << "AC,";
                 #endif
             }
             else {
                 #ifdef OUT_Markdown
+                #ifdef OUT_HTML_Markdown
+                cout << status << "</td>";
+                #else
                 cout << status << " | ";
+                #endif
                 #else
                 cout << status << ",";
                 #endif
             }
         }
+        #ifdef OUT_HTML_Markdown
+        cout << "<td>";
+        #endif
         if (max_pt < 0) {
             // max_pt 默认值为 -1
             #ifdef OUT_Markdown
+            #ifdef OUT_HTML_Markdown
+            cout << "N/A</td>";
+            #else
             cout << "N/A | ";
+            #endif
             #else
             cout << "N/A,";
             #endif
         }
         else {
             #ifdef OUT_Markdown
+            #ifdef OUT_HTML_Markdown
+            cout << max_pt << "</td>";
+            #else
             cout << max_pt << " | ";
+            #endif
             #else
             cout << max_pt << ",";
             #endif
         }
         #ifdef OUT_Markdown
         bool first_out = true; // 保证最后没有多余的逗号
+        #endif
+        #ifdef OUT_HTML_Markdown
+        cout << "<td>";
         #endif
         for (const auto& cpp_file : cpp_files) {
             #ifdef OUT_Markdown
@@ -678,12 +831,22 @@ void processAtCoder(string path, string folderName = "Atcoder") {
             #endif
         }
         #ifdef OUT_Markdown
+        #ifdef OUT_HTML_Markdown
+        cout << "</td>";
+        #endif
         #ifdef OUT_Checkbox
         cout << " | " << (status == "AC" ? "<ul><li>[x] 完成</li></ul>" : "<ul><li>[ ] 未完成</li></ul>");
         #endif
         #endif
         cout << endl;
+        #ifdef OUT_HTML_Markdown
+        cout << "</tr>\n";
+        #endif
     }
+    
+    #ifdef OUT_HTML_Markdown
+    cout << "</tbody>\n";
+    #endif
 }
 
 int main() {
@@ -695,11 +858,16 @@ initOjHomeUrl();
     cout << markdown_pre << endl;
     cout << endl;
     outputOjUrl();
+    #ifdef OUT_HTML_Markdown
+    cout << "<table>\n";
+    cout << "<thead>\n<tr>\n<th>OJ</th>\n<th>ID</th>\n<th>提交次数</th>\n<th>最终提交状态</th>\n<th>最高分数</th>\n<th>数据点数量</th>\n<th>代码提交文件</th>\n<th>数据点文件</th>\n</tr></thead>\n";
+    #else
     // 输出表头
     cout << "OJ | ID | 提交次数 | 最终提交状态 | 最高分数 | 数据点数量 | 代码提交文件 | 数据点文件";
     cout << endl;
     cout << "-- | -- | ------- | ------------ | ------ | --------- | ------------ | ---------";
     cout << endl;
+    #endif
 #endif
 #ifndef CI
     // processDirectory("D:\\code-backup\\");
@@ -707,11 +875,19 @@ initOjHomeUrl();
 #else
     processDirectory("code-backup");
 #endif
+#ifdef OUT_HTML_Markdown
+    cout << "</table>";
+    cout << endl << endl; // 分隔 HTML 代码和 Markdown
+#endif
     cout << endl;
 #ifndef CI
     processAtCoder("F:\\code-backup\\");
 #else
     processAtCoder("code-backup");
+#endif
+#ifdef OUT_HTML_Markdown
+    cout << "</table>";
+    cout << endl << endl;
 #endif
     return 0;
 }
