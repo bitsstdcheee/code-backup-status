@@ -400,7 +400,7 @@ void processDirectory(const string& path) {
                         }
                         count++;
                     }
-                    if (!has_rust && getFileExtensionWithoutDot(filename) == "rs") {
+                    if (!has_rust && fn.status == "AC" && getFileExtensionWithoutDot(filename) == "rs") {
                         has_rust = true;
                     }
                 }
