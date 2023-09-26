@@ -14,14 +14,15 @@ namespace fs = std::filesystem;
 const string ColorAcceptedRGB = "#52C41A";
 const string ColorUnacceptedRGB = "#E74C3C";
 const string ColorDefaultRGB = "#FFFFFF";
+const string ColorRustRGB = "#DEA584";
 
 const int oj_exclude_num = 10;
 const string repo_url = "https://github.com/bitsstdcheee/code-backup";
 const string repo_branch = "development";
 const string repo_prefix = repo_url + "/blob/" + repo_branch + "/";
 
-const string markdown_pre = string("[![Luogu](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/luogu.yml/badge.svg)](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/luogu.yml)") + 
-string("[![Mirror](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/mirror.yml/badge.svg)](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/mirror.yml)") + 
+const string markdown_pre = string("[![Luogu](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/luogu.yml/badge.svg)](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/luogu.yml)") + " " +
+string("[![Mirror](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/mirror.yml/badge.svg)](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/mirror.yml)") + " " +
 string("[![Runner](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/runner.yml/badge.svg)](https://github.com/bitsstdcheee/code-backup-status/actions/workflows/runner.yml)");
 
 string oj_exclude[oj_exclude_num] = {
@@ -286,6 +287,9 @@ string getUrlEncode(string s) {
         else if (c == '=') res += "%3D";
         else if (c == '%') res += "%25";
         else if (c == ' ') res += "%20";
+
+        else if (c == '-') res += '_'; // 不属于 UrlEncode, 防止 API 传参时出错
+
         else {
             res += c;
         }
@@ -301,6 +305,10 @@ string getBadgeUrl(string left, string right = "", string color = "") {
     if (right != "") url += "-" + right;
     if (color != "") url += "-" + color;
     return url;
+}
+
+string generate_html_photo_with_href(const string& photo, const string& href, const string& alt = "") {
+    return "<a href=\"" + href + "\"" + (alt == "" ? "" : " alt=\"" + alt + "\"") + "><img src=\"" + photo + "\" /></a>";
 }
 
 // 统计每个OJ中每道题目是否通过，历史分数，提交次数，代码文件（以文件链接输出），这道题的数据点（如有则输出）
@@ -345,6 +353,7 @@ void processDirectory(const string& path) {
             string id = problem.first;
             vector<pair<FileName, string>> cpp_files;
             string status = "";
+            bool has_rust = false;
             string current_oj = oj.first;
             int max_pt = -1;
             int count = 0;
@@ -380,6 +389,9 @@ void processDirectory(const string& path) {
                         }
                         count++;
                     }
+                    if (!has_rust && getFileExtensionWithoutDot(filename) == "rs") {
+                        has_rust = true;
+                    }
                 }
             }
             #ifdef OUT_Markdown
@@ -398,7 +410,10 @@ void processDirectory(const string& path) {
             #endif
             #ifdef OUT_ColorAC
             cout << "$\\textcolor{" ;
-            if (status == "AC") cout << ColorAcceptedRGB;
+            if (status == "AC") {
+                if (has_rust) cout << ColorRustRGB;
+                else cout << ColorAcceptedRGB;
+            }
             else if (status == "Waiting") cout << ColorDefaultRGB;  // Waiting 状态时 color 留空以保持默认颜色
             else cout << ColorUnacceptedRGB;
             cout << "}{\\text{" << KatexFormat(id, 
@@ -464,8 +479,10 @@ void processDirectory(const string& path) {
             for (const auto& cpp_file : cpp_files) {
                 #ifdef OUT_Markdown
                 #ifdef OUT_Badge
-                if (first_out) cout << "[![](" + getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? " (Rust)" : ""), cpp_file.first.status == "AC" ? "52C41A" : "E74C3C") + ")](" << repo_prefix << cpp_file.second << ")";
-                else cout << "<br>[![](" + getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? " (Rust)" : ""), cpp_file.first.status == "AC" ? "52C41A" : "E74C3C") + ")](" << repo_prefix << cpp_file.second << ")";
+                string exName = getFileExtensionWithoutDot(cpp_file.second);
+                if (first_out)
+                    cout << generate_html_photo_with_href(getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (exName == "rs" ? " (Rust)" : ""), cpp_file.first.status.substr(0, 2) == "AC" ? (exName == "rs" ? "DEA584" : "52C41A") : "E74C3C"), repo_prefix + cpp_file.second);
+                else cout << "<br>" << generate_html_photo_with_href(getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (exName == "rs" ? " (Rust)" : ""), cpp_file.first.status.substr(0, 2) == "AC" ? (exName == "rs" ? "DEA584" : "52C41A") : "E74C3C"), repo_prefix + cpp_file.second);
                 #else
                 if (first_out) cout << "[" << getFileDescription(cpp_file.first, true) << (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? "(**Rust**)" : "") << "](" << repo_prefix << cpp_file.second << ")";
                 else cout << "<br>[" << getFileDescription(cpp_file.first, true) << (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? "(**Rust**)" : "") << "](" << repo_prefix << cpp_file.second << ")";
@@ -647,8 +664,10 @@ void processAtCoder(string path, string folderName = "Atcoder") {
         for (const auto& cpp_file : cpp_files) {
             #ifdef OUT_Markdown
             #ifdef OUT_Badge
-            if (first_out) cout << "[![](" + getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? " (Rust)" : ""), cpp_file.first.status == "AC" ? "52C41A" : "E74C3C") + ")](" << repo_prefix << cpp_file.second << ")";
-            else cout << "<br>[![](" + getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? " (Rust)" : ""), cpp_file.first.status == "AC" ? "52C41A" : "E74C3C") + ")](" << repo_prefix << cpp_file.second << ")";
+            string exName = getFileExtensionWithoutDot(cpp_file.second);
+            if (first_out) 
+                cout << generate_html_photo_with_href(getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (exName == "rs" ? " (Rust)" : ""), cpp_file.first.status.substr(0, 2) == "AC" ? (exName == "rs" ? "DEA584" : "52C41A") : "E74C3C"), repo_prefix + cpp_file.second);
+            else cout << "<br>" << generate_html_photo_with_href(getBadgeUrl(cpp_file.first.date, cpp_file.first.status + (exName == "rs" ? " (Rust)" : ""), cpp_file.first.status.substr(0, 2) == "AC" ? (exName == "rs" ? "DEA584" : "52C41A") : "E74C3C"), repo_prefix + cpp_file.second);
             #else
             if (first_out) cout << "[" << getFileDescription(cpp_file.first, true) << (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? " (**Rust**)" : "") <<"](" << repo_prefix << cpp_file.second << ")";
             else cout << "<br>[" << getFileDescription(cpp_file.first, true) << (getFileExtensionWithoutDot(cpp_file.second) == "rs" ? "(**Rust**)" : "") << "](" << repo_prefix << cpp_file.second << ")";
