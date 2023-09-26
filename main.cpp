@@ -460,7 +460,7 @@ void processDirectory(const string& path) {
             #endif
             #else
             #ifdef OUT_HTML_Markdown
-            cout << id << (has_rust ? " ![](https://img.shields.io/badge/Rust-DEA584)" : "") << "</td><td>" << count << "</td>";
+            cout << id << (has_rust ? " <img src=\"https://img.shields.io/badge/Rust-DEA584\">" : "") << "</td><td>" << count << "</td>";
             #else
             cout << id << " | " << count << " | ";
             #endif
