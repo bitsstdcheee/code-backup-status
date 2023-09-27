@@ -669,6 +669,7 @@ void processAtCoder(string path, string folderName = "Atcoder") {
         string id = problem.first;
         vector<pair<FileName, string>> cpp_files;
         string status = "";
+        bool has_rust = false;
         string current_oj = "AtCoder";
         int max_pt = -1;
         int count = 0;
@@ -704,6 +705,9 @@ void processAtCoder(string path, string folderName = "Atcoder") {
                     }
                     count++;
                 }
+                if (!has_rust && fn.status == "AC" && getFileExtensionWithoutDot(filename) == "rs") {
+                    has_rust = true;
+                }
             }
         }
         #ifdef OUT_Markdown
@@ -737,7 +741,7 @@ void processAtCoder(string path, string folderName = "Atcoder") {
         #endif
         #else
         #ifdef OUT_HTML_Markdown
-        cout << id << "</td><td>" << count << "</td>";
+        cout << id << (has_rust ? " <img src=\"https://img.shields.io/badge/Rust-DEA584\">" : "") << "</td><td>" << count << "</td>";
         #else
         cout << id << " | " << count << " | ";
         #endif
