@@ -699,10 +699,10 @@
 </tr></thead>
 <tbody>
 <tr>
-<td><a href="https://www.luogu.com.cn/problem/AT_abc236_a">洛谷</a></td><td><a href="https://www.luogu.com.cn/remoteJudgeRedirect/atcoder/abc236_a">Link</a></td><td>abc236a</td><td>1</td><td>AC</td><td>100</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Atcoder/abc236a_ver.20220123_AC.cpp"><img src="https://img.shields.io/badge/20220123-AC-52C41A" /></a></td>
+<td><a href="https://www.luogu.com.cn/problem/AT_abc236_a">洛谷</a></td><td><a href="https://www.luogu.com.cn/remoteJudgeRedirect/atcoder/abc236_a">Link</a></td><td>abc236a</td><td>2</td><td>AC</td><td>100</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Atcoder/abc236a_ver.20220123_AC.cpp"><img src="https://img.shields.io/badge/20220123-AC-52C41A" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Atcoder/abc236a_ver.20230927_AC.rs"><img src="https://img.shields.io/badge/20230927-AC%20%28Rust%29-DEA584" /></a></td>
 </tr>
 <tr>
-<td><a href="https://www.luogu.com.cn/problem/AT_abc236_b">洛谷</a></td><td><a href="https://www.luogu.com.cn/remoteJudgeRedirect/atcoder/abc236_b">Link</a></td><td>abc236b</td><td>1</td><td>AC</td><td>100</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Atcoder/abc236b_ver.20220123_AC.cpp"><img src="https://img.shields.io/badge/20220123-AC-52C41A" /></a></td>
+<td><a href="https://www.luogu.com.cn/problem/AT_abc236_b">洛谷</a></td><td><a href="https://www.luogu.com.cn/remoteJudgeRedirect/atcoder/abc236_b">Link</a></td><td>abc236b</td><td>2</td><td>AC</td><td>100</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Atcoder/abc236b_ver.20220123_AC.cpp"><img src="https://img.shields.io/badge/20220123-AC-52C41A" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Atcoder/abc236b_ver.20230927_AC.rs"><img src="https://img.shields.io/badge/20230927-AC%20%28Rust%29-DEA584" /></a></td>
 </tr>
 <tr>
 <td><a href="https://www.luogu.com.cn/problem/AT_abc236_c">洛谷</a></td><td><a href="https://www.luogu.com.cn/remoteJudgeRedirect/atcoder/abc236_c">Link</a></td><td>abc236c</td><td>1</td><td>AC</td><td>100</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Atcoder/abc236c_ver.20220123_AC.cpp"><img src="https://img.shields.io/badge/20220123-AC-52C41A" /></a></td>
