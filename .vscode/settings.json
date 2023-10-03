@@ -4,6 +4,7 @@
         "-DOUT_ColorAC",
         "-DOUT_DoubleBackslash",
         "-DOUT_ProblemUrl",
-        "-std=c++17"
+        "-std=c++17",
+        "-DOUT_Badge"
     ]
 }

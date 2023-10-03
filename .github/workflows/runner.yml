@@ -1,8 +1,17 @@
 name: Runner
+concurrency:
+  group: runner
+  cancel-in-progress: true
 on:
   push:
+    paths:
+      - main.cpp
+      - .gitignore
+      - .github/workflows/runner.yml
   pull_request:
   workflow_dispatch:
+  schedule:
+    - cron: 0,15,30,45 * * * *
 jobs:
   update_status:
     name: 更新代码状态
@@ -33,7 +42,7 @@ jobs:
       - name: 编译 (Markdown)
         id: compile-markdown
         run: |
-          g++ status/main.cpp -o status/main_markdown -DCI -DOUT_Markdown -DOUT_ColorAC -DOUT_DoubleBackslash -DOUT_ProblemUrl
+          g++ status/main.cpp -o status/main_markdown -DCI -DOUT_Markdown -DOUT_ColorAC -DOUT_DoubleBackslash -DOUT_ProblemUrl -DOUT_Badge
       - name: 编译 (Out)
         id: compile-out
         run: |
