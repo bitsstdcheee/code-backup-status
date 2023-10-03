@@ -62,7 +62,7 @@ jobs:
             echo "depth=${{ inputs.depth }}" >> "$GITHUB_OUTPUT"
           fi
       - name: 克隆仓库 (gitee/bitsstdcheee/code-backup)
-        if: ${{ steps.sync-check.conclusion == 'success' && (failure() || steps.sync-first.outputs.result != 0) }}
+        if: ${{ always() }}
         id: clone-second
         run: |
           echo "::add-mask::${{ secrets.GITEE }}"
