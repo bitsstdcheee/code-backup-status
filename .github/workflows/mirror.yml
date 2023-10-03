@@ -67,7 +67,7 @@ jobs:
         run: |
           echo "::add-mask::${{ secrets.GITEE }}"
           echo "::add-mask::${{ secrets.REPO_KEY }}"
-          if [ "${{ steps.para-getter.outputs.depth }}" -eq -1 ]; then
+          if [ "${{ steps.para-getter.outputs.depth }}" -eq "-1" ]; then
             git clone https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup code-backup-gitee --progress
           else
             git clone https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup code-backup-gitee --progress --depth=${{ steps.para-getter.outputs.depth }}
