@@ -4,6 +4,11 @@ concurrency:
   cancel-in-progress: true
 on:
   workflow_dispatch:
+    inputs:
+      depth:
+        description: 'Gitee 克隆深度'
+        required: false
+        type: number
   push:
     paths:
       - '.github/workflows/mirror.yml'
@@ -43,13 +48,31 @@ jobs:
           echo "结果:$result"
           echo "result=$result" >> "$GITHUB_OUTPUT"
           exit 0
+      - name: 获取输入参数
+        if: ${{ steps.sync-check.conclusion == 'success' && (failure() || steps.sync-first.outputs.result != 0) }}
+        id: para-getter
+        shell: bash
+        run: |
+          echo "输入克隆深度: ${{ inputs.depth }}"
+          if [ -z "${{ inputs.depth }}" ] || [ ${{ inputs.depth }} -le 0 ]; then
+            echo "克隆深度未设置 / 不合法, 将全量克隆"
+            echo "::set-output name=depth::-1"
+          else
+            echo "克隆深度设置为 ${{ inputs.depth }}"
+            echo "::set-output name=depth::${{ inputs.depth }}"
+          fi
       - name: 克隆仓库 (gitee/bitsstdcheee/code-backup)
         if: ${{ steps.sync-check.conclusion == 'success' && (failure() || steps.sync-first.outputs.result != 0) }}
         id: clone-second
         run: |
           echo "::add-mask::${{ secrets.GITEE }}"
           echo "::add-mask::${{ secrets.REPO_KEY }}"
-          git clone https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup code-backup-gitee --progress
+          if [ "${{ steps.para-getter.outputs.depth }}" -eq -1 ]; then
+            git clone https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup code-backup-gitee --progress
+          else
+            git clone https://bitsstdcheee:${{ secrets.GITEE }}@gitee.com/bitsstdcheee/code-backup code-backup-gitee --progress --depth=${{ steps.para-getter.outputs.depth }}
+          fi
+        shell: bash
       - name: 同步仓库 (Gitee -> Github)
         id: sync-second
         if: ${{ steps.sync-check.conclusion == 'success' && steps.clone-second.conclusion == 'success' && (failure() || steps.sync-first.outputs.result != 0) }}
