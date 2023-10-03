@@ -7,7 +7,7 @@ on:
     inputs:
       depth:
         description: 'Gitee 克隆深度'
-        required: false
+        required: true
         type: number
   push:
     paths:
