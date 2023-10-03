@@ -4,8 +4,6 @@ concurrency:
   cancel-in-progress: true
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "10,25,40,55 * * * *"
   push:
     paths:
       - '.github/workflows/mirror.yml'
