@@ -9,6 +9,8 @@ on:
         description: 'Gitee 克隆深度'
         required: false
         type: number
+  schedule:
+    - cron: "10,25,40,55 * * * *"
   push:
     paths:
       - '.github/workflows/mirror.yml'
