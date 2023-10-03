@@ -56,10 +56,10 @@ jobs:
           echo "输入克隆深度: ${{ inputs.depth }}"
           if [ -z "${{ inputs.depth }}" ] || [ ${{ inputs.depth }} -le 0 ]; then
             echo "克隆深度未设置 / 不合法, 将全量克隆"
-            echo "::set-output name=depth::-1"
+            echo "depth=-1" >> "$GITHUB_OUTPUT"
           else
             echo "克隆深度设置为 ${{ inputs.depth }}"
-            echo "::set-output name=depth::${{ inputs.depth }}"
+            echo "depth=${{ inputs.depth }}" >> "$GITHUB_OUTPUT"
           fi
       - name: 克隆仓库 (gitee/bitsstdcheee/code-backup)
         if: ${{ steps.sync-check.conclusion == 'success' && (failure() || steps.sync-first.outputs.result != 0) }}
