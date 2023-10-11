@@ -594,6 +594,9 @@
 <td><a href="https://www.luogu.com.cn/problem/P3742">Luogu</a></td><td>P3742</td><td>2</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Luogu/P3742_ver.20181205_WA_36pt.cpp"><img src="https://img.shields.io/badge/20181205-WA-E74C3C" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Luogu/P3742_ver.20220202_AC.cpp"><img src="https://img.shields.io/badge/20220202-AC-52C41A" /></a></td><td></td>
 </tr>
 <tr>
+<td><a href="https://www.luogu.com.cn/problem/P3802">Luogu</a></td><td>P3802</td><td>3</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Luogu/P3802_ver.20231011_AC.cpp"><img src="https://img.shields.io/badge/20231011-AC-52C41A" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Luogu/P3802_ver.20231011_WA_0pt.cpp"><img src="https://img.shields.io/badge/20231011-WA-E74C3C" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Luogu/P3802_ver.20231011_WA_0pt_1.cpp"><img src="https://img.shields.io/badge/20231011-WA-E74C3C" /></a></td><td></td>
+</tr>
+<tr>
 <td><a href="https://www.luogu.com.cn/problem/P3808">Luogu</a></td><td>P3808</td><td>2</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Luogu/P3808_ver.20230202_AC.cpp"><img src="https://img.shields.io/badge/20230202-AC-52C41A" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Luogu/P3808_ver.20230202_WA_50pt.cpp"><img src="https://img.shields.io/badge/20230202-WA-E74C3C" /></a></td><td></td>
 </tr>
 <tr>
