@@ -117,7 +117,7 @@
 <td><a href="https://www.luogu.com.cn/problem/AT_agc002_f">Luogu</a></td><td>AT_agc002_f</td><td>1</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Luogu/AT_agc002_f_ver.20191003_AC.cpp"><img src="https://img.shields.io/badge/20191003-AC-52C41A" /></a></td><td></td>
 </tr>
 <tr>
-<td><a href="https://www.luogu.com.cn/problem/AT_code_festival_morning_easy_b">Luogu</a></td><td>AT_code_festival_morning_easy_b</td><td>1</td><td>WA</td><td>0</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Luogu/AT_code_festival_morning_easy_b_ver.20190726_WA.cpp"><img src="https://img.shields.io/badge/20190726-WA-E74C3C" /></a></td><td></td>
+<td><a href="https://www.luogu.com.cn/problem/AT_code_festival_morning_easy_b">Luogu</a></td><td>AT_code_festiva...</td><td>1</td><td>WA</td><td>0</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Luogu/AT_code_festival_morning_easy_b_ver.20190726_WA.cpp"><img src="https://img.shields.io/badge/20190726-WA-E74C3C" /></a></td><td></td>
 </tr>
 <tr>
 <td><a href="https://www.luogu.com.cn/problem/B2002">Luogu</a></td><td>B2002</td><td>1</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Luogu/B2002_ver.20230207_AC.cpp"><img src="https://img.shields.io/badge/20230207-AC-52C41A" /></a></td><td></td>
