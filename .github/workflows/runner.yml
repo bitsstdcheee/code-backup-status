@@ -42,11 +42,11 @@ jobs:
       - name: 编译 (Markdown)
         id: compile-markdown
         run: |
-          g++ status/main.cpp -o status/main_markdown -DCI -DOUT_Markdown -DOUT_ColorAC -DOUT_DoubleBackslash -DOUT_ProblemUrl -DOUT_Badge
+          g++ status/main.cpp -o status/main_markdown -DCI -DCompile_Markdown
       - name: 编译 (Out)
         id: compile-out
         run: |
-          g++ status/main.cpp -o status/main_out -DCI
+          g++ status/main.cpp -o status/main_out -DCI -DCompile_Plain
       - name: 运行 (Markdown)
         id: run-markdown
         if: always() && steps.compile-markdown.conclusion == 'success'

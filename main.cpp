@@ -8,6 +8,8 @@
 #include <filesystem>
 #include <regex>
 
+#include "def.h"
+
 using namespace std;
 namespace fs = std::filesystem;
 
@@ -316,6 +318,14 @@ string generate_html_photo_with_href(const string& photo, const string& href, co
     return "<a href=\"" + href + "\"" + (alt == "" ? "" : " alt=\"" + alt + "\"") + "><img src=\"" + photo + "\" /></a>";
 }
 
+string shorten(string s, unsigned max_len = 15) {
+    if (s.size() < max_len) {
+        return s;
+    } else {
+        return s.substr(0, max_len) + "...";
+    }   
+}
+
 // 统计每个OJ中每道题目是否通过，历史分数，提交次数，代码文件（以文件链接输出），这道题的数据点（如有则输出）
 void processDirectory(const string& path) {
     map<string, map<string, vector<string>>> oj_map;
@@ -460,9 +470,9 @@ void processDirectory(const string& path) {
             #endif
             #else
             #ifdef OUT_HTML_Markdown
-            cout << id << (has_rust ? " <img src=\"https://img.shields.io/badge/Rust-DEA584\">" : "") << "</td><td>" << count << "</td>";
+            cout << shorten(id) << (has_rust ? " <img src=\"https://img.shields.io/badge/Rust-DEA584\">" : "") << "</td><td>" << count << "</td>";
             #else
-            cout << id << " | " << count << " | ";
+            cout << shorten(id) << " | " << count << " | ";
             #endif
             #endif
             #else
