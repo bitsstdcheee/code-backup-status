@@ -69,6 +69,9 @@
 <td><a href="https://codeforces.com/problemset/problem/1886/B">Codeforces</a></td><td>P1886B</td><td>1</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1886B_ver.20231012_AC.cpp"><img src="https://img.shields.io/badge/20231012-AC-52C41A" /></a></td><td></td>
 </tr>
 <tr>
+<td><a href="https://codeforces.com/problemset/problem/1888/B">Codeforces</a></td><td>P1888B</td><td>1</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P1888B_ver.20231024_AC.cpp"><img src="https://img.shields.io/badge/20231024-AC-52C41A" /></a></td><td></td>
+</tr>
+<tr>
 <td><a href="https://codeforces.com/problemset/problem/20/A">Codeforces</a></td><td>P20A</td><td>2</td><td>WA</td><td>0</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P20A_ver.20190802_WA.cpp"><img src="https://img.shields.io/badge/20190802-WA-E74C3C" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/Codeforces/P20A_ver.20190802_WA_1.cpp"><img src="https://img.shields.io/badge/20190802-WA-E74C3C" /></a></td><td></td>
 </tr>
 <tr>
