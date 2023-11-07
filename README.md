@@ -861,6 +861,9 @@
 <td><a href="http://poj.org/problem?id=3659">POJ</a></td><td>P3659</td><td>3</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/POJ/P3659_ver.20230519_WA.cpp"><img src="https://img.shields.io/badge/20230519-WA-E74C3C" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/POJ/P3659_ver.20230718_AC.cpp"><img src="https://img.shields.io/badge/20230718-AC-52C41A" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/POJ/P3659_ver.20230718_AC_1.cpp"><img src="https://img.shields.io/badge/20230718-AC-52C41A" /></a></td><td></td>
 </tr>
 <tr>
+<td><a href="https://www.spoj.com/problems/TEST">SPOJ</a></td><td>TEST</td><td>1</td><td>AC</td><td>100</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/SPOJ/TEST_ver.20190726_AC.cpp"><img src="https://img.shields.io/badge/20190726-AC-52C41A" /></a></td><td></td>
+</tr>
+<tr>
 <td><a href="https://www.spoj.com/problems/WPUZZLES">SPOJ</a></td><td>WPUZZLES</td><td>3</td><td>TLE</td><td>0</td><td>0</td><td><a href="https://github.com/bitsstdcheee/code-backup/blob/development/SPOJ/WPUZZLES_ver.20230203_RE.cpp"><img src="https://img.shields.io/badge/20230203-RE-E74C3C" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/SPOJ/WPUZZLES_ver.20230203_TLE.cpp"><img src="https://img.shields.io/badge/20230203-TLE-E74C3C" /></a><br><a href="https://github.com/bitsstdcheee/code-backup/blob/development/SPOJ/WPUZZLES_ver.20230203_TLE_1.cpp"><img src="https://img.shields.io/badge/20230203-TLE-E74C3C" /></a></td><td></td>
 </tr>
 <tr>
