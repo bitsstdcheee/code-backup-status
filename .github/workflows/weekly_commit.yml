@@ -21,7 +21,4 @@ jobs:
           message: "Weekly Commit (bot)\nTriggered by ${{ github.event_name }}"
           branch: "main"
           directory: code
-          author_id: bitsstdcheee
-          coauthor_name: bitsstdcheee
-          coauthor_email: jestingaero@163.com
           empty: true
