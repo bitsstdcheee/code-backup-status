@@ -24,3 +24,4 @@ jobs:
           author_id: bitsstdcheee
           coauthor_name: bitsstdcheee
           coauthor_email: jestingaero@163.com
+          empty: true
