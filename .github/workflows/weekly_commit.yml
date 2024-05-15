@@ -1,0 +1,26 @@
+name: Weekly Commit
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 1"
+jobs:
+  push_weekly_commit:
+    name: 每周 Commit
+    runs-on: ubuntu-latest
+    permissions:
+        actions: write
+    steps:
+      - name: 克隆仓库
+        uses: actions/checkout@v3
+        with:
+          path: code
+      - name: 提交更改
+        uses: bitsstdcheee/action-push@85a65af848ace35c889539d7e02545f8f9e190a4
+        with:
+          github_token: ${{ secrets.REPO_KEY }}
+          message: "Weekly Commit (bot)\nTriggered by ${{ github.event_name }}"
+          branch: "main"
+          directory: code
+          author_id: bitsstdcheee
+          coauthor_name: bitsstdcheee
+          coauthor_email: jestingaero@163.com
