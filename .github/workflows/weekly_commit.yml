@@ -8,7 +8,7 @@ jobs:
     name: 每周 Commit
     runs-on: ubuntu-latest
     permissions:
-        actions: write
+      contents: write
     steps:
       - name: 克隆仓库
         uses: actions/checkout@v3
@@ -21,4 +21,7 @@ jobs:
           message: "Weekly Commit (bot)\nTriggered by ${{ github.event_name }}"
           branch: "main"
           directory: code
+          author_id: bitsstdcheee
+          coauthor_name: bitsstdcheee
+          coauthor_email: jestingaero@163.com
           empty: true
