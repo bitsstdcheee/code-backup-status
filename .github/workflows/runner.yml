@@ -22,7 +22,7 @@ jobs:
       contents: write
     steps:
       - name: 克隆仓库 (bitsstdcheee/code-backup)
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.1.6
         with:
           repository: bitsstdcheee/code-backup
           ref: development
@@ -31,7 +31,7 @@ jobs:
           token: ${{ secrets.REPO_KEY }}
           fetch-depth: 1
       - name: 克隆仓库 (本仓库)
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.1.6
         with:
           path: status
       - name: 获取当前分支
