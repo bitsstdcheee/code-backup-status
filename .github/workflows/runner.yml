@@ -97,7 +97,7 @@ jobs:
           branch: ${{ steps.extract-branch.outputs.branch }}
       - name: 上传构件 (code-backup-status)
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: code-backup-status-repo
           path: |
@@ -105,7 +105,7 @@ jobs:
             !status/.git
       - name: 上传构建 (output)
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: output
           path: |
