@@ -11,7 +11,7 @@ on:
   pull_request:
   workflow_dispatch:
   schedule:
-    - cron: 0,15,30,45 * * * *
+    - cron: "34 9 * * *"
 jobs:
   update_status:
     name: 更新代码状态
